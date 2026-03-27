@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CBT Belajar Inovasi</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<style>
+:root { --primary: #1e3a8a; --secondary: #3b82f6; --accent: #10b981; --bg-body: #f1f5f9; }
+body { font-family: 'Poppins', sans-serif; background-color: var(--bg-body); color: #1e293b; overflow-x: hidden; }
+body.exam-mode { overflow: hidden; user-select: none; }
+.hidden { display: none !important; }
+.q-content img, .opt-content img { max-width: 100% !important; height: auto !important; border-radius: 6px; margin: 5px 0; }
+.auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); padding: 20px; }
+.auth-card { background: white; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); width: 100%; max-width: 420px; padding: 40px; }
+.wrapper { display: flex; width: 100%; align-items: stretch; position: relative; }
+#sidebar { min-width: 260px; max-width: 260px; background: #1e293b; color: #fff; min-height: 100vh; position: fixed; z-index: 1050; transition: all 0.3s; left: 0; top: 0; }
+#sidebar.active { left: -260px; }
+#content { width: 100%; margin-left: 260px; padding: 20px; transition: all 0.3s; min-height: 100vh; }
+#sidebar ul li a { padding: 15px 25px; display: block; color: #cbd5e1; text-decoration: none; border-left: 4px solid transparent; cursor: pointer; }
+#sidebar ul li a:hover, #sidebar ul li a.active { background: rgba(255,255,255,0.05); color: #fff; border-left-color: var(--accent); }
+.user-profile-img { width: 45px; height: 45px; object-fit: cover; border-radius: 50%; border: 2px solid #fff; }
+@media (max-width: 768px) { #sidebar { left: -260px; } #sidebar.active { left: 0; } #content { margin-left: 0; padding: 15px; } .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040; display: none; } .overlay.active { display: block; } }
+#view-exam { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; z-index: 9999; background: #f8fafc; overflow: hidden; display: flex; flex-direction: column; }
+.exam-header { flex-shrink: 0; height: 60px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.exam-container-split { flex-grow: 1; display: flex; gap: 20px; padding: 20px; overflow: hidden; }
+.q-main-area { flex: 3; background: white; border-radius: 12px; padding: 25px; display: flex; flex-direction: column; overflow-y: auto; height: 100%; }
+#q-slides-container { flex-grow: 1; overflow-y: auto; }
+.q-nav-area { flex: 1; background: white; border-radius: 12px; padding: 20px; overflow-y: auto; height: 100%; }
+@media (max-width: 768px) { .exam-container-split { flex-direction: column-reverse; padding: 10px; gap: 10px; } .q-nav-area { flex: none; height: auto; max-height: 150px; } }
+.q-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 8px; margin-top: 15px; }
+.q-nav-btn { aspect-ratio: 1; border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 6px; cursor: pointer; }
+.q-nav-btn.active-q { background: var(--secondary); color: white; }
+.q-nav-btn.answered { background: var(--accent); color: white; }
+.loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+.spinner { width: 50px; height: 50px; border: 5px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.cursor-pointer { cursor: pointer; }
+.clickable-opt { cursor: pointer; transition: all 0.2s ease-in-out; margin-bottom: 0; }
+.clickable-opt:hover { background-color: #f1f5f9 !important; border-color: var(--secondary) !important; }
+</style>
+</head>
+<body>
+<div id="loader" class="loader hidden"><div class="spinner"></div></div>
+<div id="sidebar-overlay" class="overlay" onclick="toggleSidebar()"></div>
+
+<div id="view-auth" class="auth-container">
+    <div class="auth-card">
+        <div class="text-center mb-4">
+            <div id="logo-container"><img src="https://lh3.googleusercontent.com/d/1cVKB34hs3aHdIr5OkNhcaZ9OmFHZKR70" class="mb-3 rounded" width="120" alt="Logo"></div>
+            <h4 class="fw-bold text-primary">CBT BELAJAR INOVASI</h4>
+        </div>
+        <form id="frm-login" onsubmit="event.preventDefault(); handleLogin(); return false;">
+            <div class="form-floating mb-3">
+                <input type="text" id="u-login" class="form-control" placeholder="User" required>
+                <label>Username</label>
+            </div>
+            <div class="form-floating mb-4 position-relative">
+                <input type="password" id="p-login" class="form-control" placeholder="Pass" required>
+                <label>Password</label>
+                <i class="fas fa-eye position-absolute top-50 end-0 translate-middle-y me-3 cursor-pointer text-muted fs-5" id="togglePassword"></i>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">MASUK SEKARANG</button>
+        </form>
+        <div class="text-center mt-4 text-xs text-muted">
+            <small>&copy; 2026 Belajar Inovasi. All rights reserved.</small>
+        </div>
+    </div>
+</div>
+
+<div id="view-dashboard" class="hidden wrapper">
+    <nav id="sidebar">
+        <div class="sidebar-header d-flex align-items-center justify-content-between p-3 border-bottom border-secondary">
+            <div><h5 class="fw-bold mb-0 text-white">MENU UTAMA</h5><small class="text-white-50" id="user-role-disp"></small></div>
+        </div>
+        <ul class="list-unstyled components hidden" id="menu-admin">
+            <li><a onclick="loadPage('admin-home')" class="nav-link active"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+            <li><a onclick="loadPage('admin-users')" class="nav-link"><i class="fas fa-users me-2"></i>Data Peserta</a></li>
+            <li><a onclick="loadPage('admin-classroom')" class="nav-link"><i class="fas fa-video me-2"></i>Ruang Kelas</a></li>
+            <li><a onclick="loadPage('admin-ujian')" class="nav-link"><i class="fas fa-calendar me-2"></i>Bank Soal</a></li>
+            <li><a onclick="loadPage('hasil-rekap')" class="nav-link"><i class="fas fa-chart-bar me-2"></i>Hasil Nilai</a></li>
+            <li><a onclick="loadPage('guru-monitoring')" class="nav-link"><i class="fas fa-tv me-2"></i>Monitoring</a></li>
+            <li><a onclick="handleSysAction('sysResetCache')" class="nav-link text-warning"><i class="fas fa-bolt me-2"></i>Reset Cache</a></li>
+        </ul>
+        <ul class="list-unstyled components hidden" id="menu-guru">
+            <li><a onclick="loadPage('admin-home')" class="nav-link active"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+            <li><a onclick="loadPage('admin-users')" class="nav-link"><i class="fas fa-users me-2"></i>Data Peserta</a></li>
+            <li><a onclick="loadPage('admin-classroom')" class="nav-link"><i class="fas fa-video me-2"></i>Ruang Kelas</a></li>
+            <li><a onclick="loadPage('admin-ujian')" class="nav-link"><i class="fas fa-file-alt me-2"></i>Bank Soal</a></li>
+            <li><a onclick="loadPage('hasil-rekap')" class="nav-link"><i class="fas fa-poll me-2"></i>Hasil Nilai</a></li>
+            <li><a onclick="loadPage('guru-monitoring')" class="nav-link"><i class="fas fa-desktop me-2"></i>Live Monitor</a></li>
+        </ul>
+        <ul class="list-unstyled components hidden" id="menu-siswa">
+            <li><a onclick="loadPage('siswa-home')" class="nav-link active"><i class="fas fa-pencil-alt me-2"></i>Ujian Saya</a></li>
+            <li><a onclick="loadPage('siswa-classroom')" class="nav-link"><i class="fas fa-video me-2"></i>Ruang Kelas</a></li>
+        </ul>
+        
+        <div class="p-3 mt-auto border-top border-secondary position-absolute bottom-0 w-100">
+            <div class="d-flex align-items-center mb-3 text-white">
+                <img src="https://via.placeholder.com/45" id="sidebar-user-img" class="user-profile-img me-2 bg-white">
+                <div class="overflow-hidden">
+                    <span id="u-name-disp" class="fw-bold d-block text-truncate" style="max-width: 140px;">User</span>
+                    <a href="#" onclick="openProfileModal()" class="text-info small text-decoration-none"><i class="fas fa-cog me-1"></i>Pengaturan Akun</a>
+                </div>
+            </div>
+            <button onclick="handleLogout()" class="btn btn-danger btn-sm w-100 fw-bold"><i class="fas fa-sign-out-alt me-1"></i>LOGOUT</button>
+        </div>
+    </nav>
+
+    <div id="content">
+        <nav class="navbar navbar-light bg-white rounded shadow-sm mb-4 p-2 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <button class="btn btn-light me-2 border" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                <span class="navbar-brand mb-0 h1 fw-bold text-primary fs-5" id="page-title">DASHBOARD</span>
+            </div>
+            <button class="btn btn-outline-primary btn-sm rounded-pill px-3" onclick="appRefresh()"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </nav>
+        <div id="content-area"></div>
+    </div>
+</div>
+
+<div id="view-exam" class="hidden">
+    <div class="exam-header">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-laptop-code text-primary me-2 fs-4"></i>
+            <div class="d-none d-md-block"><h6 class="fw-bold m-0" id="do-exam-title">Judul Ujian</h6></div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-danger p-2 hidden" id="viol-badge">Pelanggaran: <span id="viol-disp">0</span>/3</span>
+            <div class="badge bg-dark fs-6 p-2 font-monospace"><i class="fas fa-clock me-1"></i><span id="timer-disp">00:00</span></div>
+        </div>
+    </div>
+    <div class="exam-container-split">
+        <div class="q-main-area">
+            <div id="q-slides-container"></div>
+            <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                <button class="btn btn-outline-secondary px-3" onclick="navSlide(-1)"><i class="fas fa-chevron-left"></i> Prev</button>
+                <button class="btn btn-primary px-3" onclick="navSlide(1)">Next <i class="fas fa-chevron-right"></i></button>
+                <button class="btn btn-success px-4" id="btn-finish" onclick="submitExamButton(false)"><i class="fas fa-check-circle me-1"></i> KIRIM JAWABAN</button>
+            </div>
+        </div>
+        <div class="q-nav-area shadow-sm">
+            <h6 class="fw-bold border-bottom pb-2 mb-2 small text-muted">NAVIGASI SOAL</h6>
+            <div id="nav-grid" class="q-grid"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalProfile" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title"><i class="fas fa-user-cog me-2"></i>Pengaturan Akun</h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="frm-profile" onsubmit="event.preventDefault(); saveProfile(); return false;">
+          <div class="text-center mb-3">
+            <img src="https://via.placeholder.com/100" id="prof-preview" class="rounded-circle border border-3 border-primary" style="width: 100px; height: 100px; object-fit: cover;">
+            <div class="mt-2">
+              <label for="prof-foto" class="btn btn-sm btn-outline-primary"><i class="fas fa-camera me-1"></i>Ganti Foto</label>
+              <input type="file" id="prof-foto" class="d-none" accept="image/*" onchange="previewProfileImage(this)">
+              <input type="hidden" id="prof-b64">
+            </div>
+          </div>
+          <div class="mb-3"><label class="small fw-bold">Nama Lengkap</label><input type="text" id="prof-nama" class="form-control" required></div>
+          <div class="mb-4">
+            <label class="small fw-bold">Password Baru <span class="text-muted fw-normal">(Kosongkan jika tetap)</span></label>
+            <div class="input-group">
+              <input type="password" id="prof-pass" class="form-control" placeholder="******">
+              <button class="btn btn-outline-secondary" type="button" onclick="toggleProfPass()"><i class="fas fa-eye" id="icon-prof-pass"></i></button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success w-100 fw-bold shadow-sm" id="btn-save-profile">SIMPAN PERUBAHAN</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+<script>
+// ==========================================
+// KONFIGURASI PENTING (API LINK)
+// ==========================================
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx86mIDIH5dctFNJ9bdxqtczThyYn7c_ZNFE0kMlkmtw4DRM5qVIMUEfZRpFPBLl6aX/exec'; 
+
+// --- VARIABEL GLOBAL ---
+let examSubmitting = false; let user = null; let gData = {}; let activeExamId = null;
+let timerInt, monitorInterval, autosaveInterval; let totalQ = 0, currentQIdx = 0;
+let violationCount = 0; const maxViolations = 3; let isExamFinished = false;
+
+// --- API FETCHER (PENGGANTI google.script.run) ---
+async function fetchAPI(payload) {
+    if(user) payload.caller = { ID: user.ID, Role: user.Role, Kelas: user.Kelas };
+    try {
+        const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+        return await response.json();
+    } catch (e) {
+        return { status: 'error', msg: 'Koneksi ke server gagal. Cek internet Anda.' };
+    }
+}
+
+// --- INIT & SESI ---
+$(document).ready(() => {
+    // Mata Login
+    $('#togglePassword').click(function(){
+        const p = $('#p-login'); p.attr('type', p.attr('type') === 'password' ? 'text' : 'password');
+        $(this).toggleClass('fa-eye fa-eye-slash');
+    });
+
+    const savedUser = localStorage.getItem('cbt_user');
+    if(savedUser) { user = JSON.parse(savedUser); initDash(); checkResumeExam(); }
+});
+
+function toggleSidebar() { $('#sidebar').toggleClass('active'); $('#sidebar-overlay').toggleClass('active'); }
+function showLoad(s) { s ? $('#loader').removeClass('hidden') : $('#loader').addClass('hidden'); }
+function toast(icon, title) { Swal.mixin({toast: true, position: 'top-end', showConfirmButton: false, timer: 3000}).fire({icon: icon, title: title}); }
+
+// --- 1. AUTH & PROFIL ---
+async function handleLogin() {
+    showLoad(true);
+    const res = await fetchAPI({ action: 'login', username: $('#u-login').val(), password: $('#p-login').val() });
+    showLoad(false);
+    
+    if(res.status === 'success') {
+        user = res.data; user.LogoUrl = res.logo;
+        localStorage.setItem('cbt_user', JSON.stringify(user));
+        initDash();
+    } else Swal.fire('Gagal', res.msg, 'error');
+}
+
+function handleLogout() {
+    Swal.fire({ title: 'Logout?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya' }).then((r) => {
+        if(r.isConfirmed) { localStorage.clear(); window.location.reload(); }
+    });
+}
+
+function initDash() {
+    $('#view-auth').hide(); $('#view-dashboard').removeClass('hidden');
+    $('#u-name-disp').text(user.Nama); $('#user-role-disp').text(user.Role.toUpperCase());
+    if(user.FotoUrl || user.Foto) $('#sidebar-user-img').attr('src', user.FotoUrl || user.Foto);
+    if(user.LogoUrl) $('#logo-container img').attr('src', user.LogoUrl);
+    
+    $('.components').addClass('hidden');
+    if(user.Role === 'siswa') { $('#menu-siswa').removeClass('hidden'); loadPage('siswa-home'); } 
+    else if(user.Role === 'guru') { $('#menu-guru').removeClass('hidden'); loadPage('admin-home'); } 
+    else { $('#menu-admin').removeClass('hidden'); loadPage('admin-home'); }
+}
+
+function openProfileModal() {
+    $('#modalProfile').modal('show'); $('#prof-nama').val(user.Nama); $('#prof-pass').val(''); $('#prof-b64').val('');
+    $('#prof-preview').attr('src', user.FotoUrl || user.Foto || 'https://via.placeholder.com/100');
+}
+
+function previewProfileImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) { $('#prof-preview').attr('src', e.target.result); $('#prof-b64').val(e.target.result); }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+function toggleProfPass() { const p = $('#prof-pass'); p.attr('type', p.attr('type') === 'password' ? 'text' : 'password'); $('#icon-prof-pass').toggleClass('fa-eye fa-eye-slash'); }
+
+async function saveProfile() {
+    $('#btn-save-profile').prop('disabled', true).text('MENYIMPAN...');
+    const res = await fetchAPI({ action: 'updateProfile', nama: $('#prof-nama').val(), password: $('#prof-pass').val(), foto: $('#prof-b64').val() });
+    $('#btn-save-profile').prop('disabled', false).text('SIMPAN PERUBAHAN');
+    
+    if(res.status === 'success') {
+        user = res.user; localStorage.setItem('cbt_user', JSON.stringify(user));
+        $('#u-name-disp').text(user.Nama); if(user.Foto) $('#sidebar-user-img').attr('src', user.Foto);
+        $('#modalProfile').modal('hide'); toast('success', 'Profil Diperbarui!');
+    } else Swal.fire('Gagal', res.msg, 'error');
+}
+
+// --- 2. ROUTING DASHBOARD ---
+async function loadPage(page) {
+    disableSecurity();
+    $('#view-exam').addClass('hidden'); $('#view-dashboard').removeClass('hidden'); $('body').removeClass('exam-mode');
+    $('#page-title').text(page.replace('-', ' ').toUpperCase());
+    $('.nav-link').removeClass('active'); $(`a[onclick="loadPage('${page}')"]`).addClass('active');
+    if(window.innerWidth <= 768) toggleSidebar();
+    
+    showLoad(true);
+    let action = 'getDashboardData'; // Default
+    if(page === 'admin-users') action = 'getUserList';
+    else if(page === 'admin-classroom' || page === 'siswa-classroom') action = 'getClassroomData';
+    else if(page === 'hasil-rekap') action = 'getRecapList';
+    else if(page === 'guru-monitoring') { showLoad(false); /* Logic Monitoring */ return; }
+
+    const res = await fetchAPI({ action: action });
+    showLoad(false);
+    
+    if (res.status === 'success') {
+        gData = res.data;
+        if(page === 'admin-home' || page === 'siswa-home' || page === 'admin-ujian') renderDashboardData(page);
+        else if(page === 'admin-users') renderUsers(res.data);
+        else if(page === 'admin-classroom' || page === 'siswa-classroom') renderClassroom(page, res.data);
+        else if(page === 'hasil-rekap') renderRecapList(res.data);
+    } else Swal.fire('Error', res.msg, 'error');
+}
+
+function renderDashboardData(page) {
+    const area = $('#content-area');
+    if (page === 'admin-home') area.html(`<div class="row g-4"><div class="col-md-4"><div class="card p-4 shadow-sm border-start border-primary border-4"><h2>${gData.stats.totalSiswa}</h2><p>Total Siswa Aktif</p></div></div><div class="col-md-4"><div class="card p-4 shadow-sm border-start border-success border-4"><h2>${gData.stats.totalUjian}</h2><p>Total Ujian</p></div></div></div>`);
+    else if (page === 'siswa-home') {
+        let h = `<div class="alert alert-primary shadow-sm mb-4"><h4>Halo, ${user.Nama}</h4></div><div class="row g-3">`;
+        (gData.availableExams||[]).forEach(e => {
+            let btn = e.IsFinished ? `<button class="btn btn-secondary w-100 mt-2" disabled>Selesai</button>` : `<button class="btn btn-success w-100 mt-2 shadow-sm fw-bold" onclick="startExam('${e.ExamID}')">MULAI UJIAN</button>`;
+            h += `<div class="col-md-4"><div class="card shadow-sm"><div class="card-body"><h5>${e.Judul}</h5><p class="text-muted small">${e.Mapel} | ${e.Durasi} Menit</p>${btn}</div></div></div>`;
+        });
+        area.html(h + `</div>`);
+    } else if (page === 'admin-ujian') {
+        area.html(`<div class="alert alert-info">Fitur manajemen ujian aktif. Gunakan format tabel Anda untuk merender ${gData.exams.length} ujian.</div>`);
+    }
+}
+function renderUsers(data) { $('#content-area').html(`<div class="alert alert-info">Fitur Data User: Ditemukan ${data.length} User.</div>`); }
+function renderClassroom(page, data) { $('#content-area').html(`<div class="alert alert-info">Ditemukan ${data.length} Sesi Kelas.</div>`); }
+function renderRecapList(data) { $('#content-area').html(`<div class="alert alert-info">Rekap Nilai: Ditemukan ${data.length} hasil ujian.</div>`); }
+async function handleSysAction(action) { showLoad(true); const res = await fetchAPI({action:action}); showLoad(false); toast('success', res.msg); }
+
+// --- 3. LOGIKA UJIAN & KEAMANAN ---
+function checkResumeExam() {
+    const state = JSON.parse(localStorage.getItem('cbt_active_exam'));
+    if(state && state.id) {
+        Swal.fire({ title: 'Lanjutkan Ujian?', text: 'Ada sesi ujian tertunda.', icon: 'info', confirmButtonText: 'Lanjutkan', allowOutsideClick: false }).then(() => {
+            activeExamId = state.id; totalQ = state.qs.length; $('#do-exam-title').html(`${state.judul} | ${user.Nama}`);
+            enableSecurity(); runExam(state.qs, state.dur, true);
+        });
+    }
+}
+
+async function startExam(eid) {
+    Swal.fire({ title: 'Mulai Ujian?', text: "Keluar layar ujian 3x akan otomatis Submit!", icon: 'warning', showCancelButton: true, confirmButtonText: '🚀 MULAI' }).then(async r => {
+        if(r.isConfirmed) {
+            showLoad(true);
+            const res = await fetchAPI({ action: 'getExamPack', examId: eid });
+            showLoad(false);
+            if(res.status === 'success') {
+                localStorage.removeItem(`ANS_${user.ID}_${eid}`);
+                activeExamId = eid; totalQ = res.data.length;
+                $('#do-exam-title').html(`${res.judul} | ${user.Nama}`);
+                localStorage.setItem('cbt_active_exam', JSON.stringify({ id: eid, qs: res.data, dur: res.duration, start: Date.now(), judul: res.judul }));
+                enableSecurity(); runExam(res.data, res.duration, false);
+            } else Swal.fire('Gagal', res.msg, 'error');
+        }
+    });
+}
+
+function enableSecurity() { 
+    violationCount = 0; isExamFinished = false; $('#viol-disp').text(violationCount); $('#viol-badge').removeClass('hidden');
+    const d = document.documentElement; if (d.requestFullscreen) d.requestFullscreen().catch(()=>{});
+    document.addEventListener("visibilitychange", handleCheatEvent); document.addEventListener("fullscreenchange", handleCheatEvent);
+}
+
+function disableSecurity() { 
+    document.removeEventListener("visibilitychange", handleCheatEvent); document.removeEventListener("fullscreenchange", handleCheatEvent);
+    try{ document.exitFullscreen().catch(()=>{}) }catch(e){}
+}
+
+function handleCheatEvent(e) {
+    if (isExamFinished) return;
+    if (e.type === 'visibilitychange' && document.hidden) triggerViolation("Keluar dari tab ujian!");
+    if (e.type === 'fullscreenchange' && !document.fullscreenElement) triggerViolation("Keluar dari layar penuh!");
+}
+
+function triggerViolation(msg) {
+    if(isExamFinished) return;
+    violationCount++; $('#viol-disp').text(violationCount);
+    if (violationCount >= maxViolations) {
+        isExamFinished = true;
+        Swal.fire({ icon: 'error', title: 'DISKUALIFIKASI!', text: 'Pelanggaran Maksimal. Ujian Terkirim.', allowOutsideClick: false }).then(() => submitExamButton(true));
+    } else {
+        Swal.fire({ icon: 'warning', title: 'PERINGATAN!', text: `${msg} (${violationCount}/${maxViolations})`, allowOutsideClick: false }).then(() => { if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); });
+    }
+}
+
+function runExam(qs, dur, isResume) {
+    $('#view-dashboard').addClass('hidden'); $('#view-exam').removeClass('hidden'); $('body').addClass('exam-mode');
+    const c = $('#q-slides-container'); const g = $('#nav-grid'); c.empty(); g.empty();
+    qs.forEach((q,i) => {
+        let inp = `<textarea class="form-control" rows="5" name="ans-${q.QID}"></textarea>`;
+        if(q.Tipe.includes('PG')) {
+            inp = ''; const opts = JSON.parse(q.Options||"[]");
+            opts.forEach(o => inp += `<label class="form-check p-3 border mb-2 rounded bg-white clickable-opt w-100 d-flex align-items-center"><input class="form-check-input flex-shrink-0" type="${q.Tipe==='PGK'?'checkbox':'radio'}" name="ans-${q.QID}" value="${encodeURIComponent(o)}"><div class="ms-3 flex-grow-1 opt-content mb-0">${o}</div></label>`);
+        }
+        c.append(`<div class="q-slide hidden" id="sl-${i}" data-qid="${q.QID}" data-type="${q.Tipe}"><div class="badge bg-primary mb-3">No. ${i+1}</div><div class="mb-4 lead">${q.Pertanyaan}</div>${inp}</div>`);
+        g.append(`<button id="nb-${i}" class="q-nav-btn" onclick="jump(${i})">${i+1}</button>`);
+    });
+    jump(0);
+    
+    let startTime = Date.now();
+    if(isResume) { const st = JSON.parse(localStorage.getItem('cbt_active_exam')); if(st && st.start) startTime = st.start; }
+    const endTime = startTime + (dur * 60000);
+
+    clearInterval(timerInt);
+    timerInt = setInterval(() => {
+        const diff = Math.floor((endTime - Date.now()) / 1000);
+        if(diff <= 0) { clearInterval(timerInt); submitExamButton(true); }
+        else { let m = Math.floor(diff/60), s = diff%60; $('#timer-disp').text(`${m}:${s<10?'0':''}${s}`); if(diff < 300) $('#timer-disp').addClass('text-danger fw-bold'); }
+    }, 1000);
+}
+
+function jump(i) { currentQIdx = i; $('.q-slide').addClass('hidden'); $(`#sl-${i}`).removeClass('hidden'); $('.q-nav-btn').removeClass('active-q'); $(`#nb-${i}`).addClass('active-q'); }
+function navSlide(dir) { let next = currentQIdx + dir; if(next >= 0 && next < totalQ) jump(next); }
+
+async function submitExamButton(force = false) {
+    if (examSubmitting) return; 
+    if (!force) {
+        const r = await Swal.fire({ title: 'Kirim Jawaban?', text: 'Pastikan semua selesai.', icon: 'question', showCancelButton: true, confirmButtonText: 'Kirim' });
+        if(!r.isConfirmed) return;
+    }
+    
+    examSubmitting = true; $('#btn-finish').prop('disabled', true).html('Mengirim...');
+    clearInterval(timerInt); isExamFinished = true; disableSecurity();
+    
+    let ans = [];
+    $('.q-slide').each(function() {
+        const qid = $(this).data('qid'), t = $(this).data('type'); let v = null;
+        if (t === 'PGS') { const checked = $(this).find('input:checked').val(); if(checked) v = decodeURIComponent(checked); }
+        else if (t === 'PGK') { v=[]; $(this).find('input:checked').each(function(){ v.push(decodeURIComponent($(this).val())) }); }
+        else v = $(this).find('textarea').val();
+        if (v !== null && v !== undefined) ans.push({ qid: qid, answer: v });
+    });
+
+    const res = await fetchAPI({ action: 'submitExam', examId: activeExamId, answers: ans, violationCount: violationCount });
+    if (res.status === 'success') {
+        localStorage.removeItem('cbt_active_exam'); $('body').removeClass('exam-mode');
+        Swal.fire('Selesai!', 'Jawaban berhasil dikirim.', 'success').then(() => window.location.reload());
+    } else {
+        Swal.fire('Gagal', res.msg, 'error'); examSubmitting = false; $('#btn-finish').prop('disabled', false).html('KIRIM JAWABAN');
+    }
+}
+</script>
+</body>
+</html>
