@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<base target="_top">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CBT Belajar Inovasi</title>
+<title>CBT BELAJAR INOVASI</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,7 +24,6 @@ body.exam-mode { overflow: hidden; user-select: none; }
 #content { width: 100%; margin-left: 260px; padding: 20px; transition: all 0.3s; min-height: 100vh; }
 #sidebar ul li a { padding: 15px 25px; display: block; color: #cbd5e1; text-decoration: none; border-left: 4px solid transparent; cursor: pointer; }
 #sidebar ul li a:hover, #sidebar ul li a.active { background: rgba(255,255,255,0.05); color: #fff; border-left-color: var(--accent); }
-.user-profile-img { width: 45px; height: 45px; object-fit: cover; border-radius: 50%; border: 2px solid #fff; }
 @media (max-width: 768px) { #sidebar { left: -260px; } #sidebar.active { left: 0; } #content { margin-left: 0; padding: 15px; } .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040; display: none; } .overlay.active { display: block; } }
 #view-exam { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; z-index: 9999; background: #f8fafc; overflow: hidden; display: flex; flex-direction: column; }
 .exam-header { flex-shrink: 0; height: 60px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
@@ -39,9 +39,23 @@ body.exam-mode { overflow: hidden; user-select: none; }
 .loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 10000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
 .spinner { width: 50px; height: 50px; border: 5px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { 100% { transform: rotate(360deg); } }
-.cursor-pointer { cursor: pointer; }
+.match-container { position: relative; width: 100%; min-height: 300px; display: flex; justify-content: space-between; padding: 10px; user-select: none; }
+.match-col { width: 40%; display: flex; flex-direction: column; gap: 15px; z-index: 2; }
+.match-item { background: #fff; border: 2px solid #e2e8f0; padding: 10px 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s; position: relative; }
+.match-item:hover { border-color: var(--secondary); }
+.match-item.selected { border-color: var(--primary); background: #eff6ff; }
+.match-item.matched { border-color: var(--accent); background: #f0fdf4; opacity: 0.8; }
+.match-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.tbl-pgkk th, .tbl-pgkk td { text-align: center; vertical-align: middle; }
+.tbl-pgkk td:first-child { text-align: left; }
+.swal2-container { z-index: 20000 !important; }
+.btn-loading { pointer-events: none; opacity: 0.8; }
+#q-slides-container .form-check-input { width: 1.8em !important; height: 1.8em !important; cursor: pointer; margin-top: 0 !important; }
 .clickable-opt { cursor: pointer; transition: all 0.2s ease-in-out; margin-bottom: 0; }
 .clickable-opt:hover { background-color: #f1f5f9 !important; border-color: var(--secondary) !important; }
+.video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 8px;}
+.video-container iframe, .video-container object, .video-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.user-profile-img { width: 40px; height: 40px; object-fit: cover; border-radius: 50%; border: 2px solid #fff; }
 </style>
 </head>
 <body>
@@ -51,7 +65,7 @@ body.exam-mode { overflow: hidden; user-select: none; }
 <div id="view-auth" class="auth-container">
     <div class="auth-card">
         <div class="text-center mb-4">
-            <div id="logo-container"><img src="https://lh3.googleusercontent.com/d/1cVKB34hs3aHdIr5OkNhcaZ9OmFHZKR70" class="mb-3 rounded" width="120" alt="Logo"></div>
+            <div id="logo-container"><img src="https://lh3.googleusercontent.com/d/1cVKB34hs3aHdIr5OkNhcaZ9OmFHZKR70" class="mb-3 rounded" width="150" alt="Logo"></div>
             <h4 class="fw-bold text-primary">CBT BELAJAR INOVASI</h4>
         </div>
         <form id="frm-login" onsubmit="event.preventDefault(); handleLogin(); return false;">
@@ -66,8 +80,8 @@ body.exam-mode { overflow: hidden; user-select: none; }
             </div>
             <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">MASUK SEKARANG</button>
         </form>
-        <div class="text-center mt-4 text-xs text-muted">
-            <small>&copy; 2026 Belajar Inovasi. All rights reserved.</small>
+        <div class="text-center mt-4">
+            <small class="text-muted">© Belajar Inovasi</small>
         </div>
     </div>
 </div>
@@ -96,25 +110,23 @@ body.exam-mode { overflow: hidden; user-select: none; }
         </ul>
         <ul class="list-unstyled components hidden" id="menu-siswa">
             <li><a onclick="loadPage('siswa-home')" class="nav-link active"><i class="fas fa-pencil-alt me-2"></i>Ujian Saya</a></li>
-            <li><a onclick="loadPage('siswa-classroom')" class="nav-link"><i class="fas fa-video me-2"></i>Ruang Kelas</a></li>
+            <li><a onclick="loadPage('siswa-classroom')" class="nav-link"><i class="fas fa-video me-2"></i>Ruang Kelas (Materi)</a></li>
         </ul>
-        
         <div class="p-3 mt-auto border-top border-secondary position-absolute bottom-0 w-100">
             <div class="d-flex align-items-center mb-3 text-white">
-                <img src="https://via.placeholder.com/45" id="sidebar-user-img" class="user-profile-img me-2 bg-white">
-                <div class="overflow-hidden">
-                    <span id="u-name-disp" class="fw-bold d-block text-truncate" style="max-width: 140px;">User</span>
+                <img src="https://via.placeholder.com/40" id="sidebar-user-img" class="user-profile-img me-2 bg-white">
+                <div>
+                    <span id="u-name-disp" class="fw-bold d-block text-truncate" style="max-width: 150px;">User</span>
                     <a href="#" onclick="openProfileModal()" class="text-info small text-decoration-none"><i class="fas fa-cog me-1"></i>Pengaturan Akun</a>
                 </div>
             </div>
-            <button onclick="handleLogout()" class="btn btn-danger btn-sm w-100 fw-bold"><i class="fas fa-sign-out-alt me-1"></i>LOGOUT</button>
+            <button onclick="handleLogout()" class="btn btn-danger btn-sm w-100">LOGOUT</button>
         </div>
     </nav>
-
     <div id="content">
         <nav class="navbar navbar-light bg-white rounded shadow-sm mb-4 p-2 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-                <button class="btn btn-light me-2 border" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                <button id="menuToggle" class="btn btn-light me-2 border" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
                 <span class="navbar-brand mb-0 h1 fw-bold text-primary fs-5" id="page-title">DASHBOARD</span>
             </div>
             <button class="btn btn-outline-primary btn-sm rounded-pill px-3" onclick="appRefresh()"><i class="fas fa-sync-alt"></i> Refresh</button>
@@ -138,14 +150,139 @@ body.exam-mode { overflow: hidden; user-select: none; }
         <div class="q-main-area">
             <div id="q-slides-container"></div>
             <div class="d-flex justify-content-between mt-4 pt-3 border-top">
-                <button class="btn btn-outline-secondary px-3" onclick="navSlide(-1)"><i class="fas fa-chevron-left"></i> Prev</button>
-                <button class="btn btn-primary px-3" onclick="navSlide(1)">Next <i class="fas fa-chevron-right"></i></button>
+                <button class="btn btn-outline-secondary px-3" id="btn-prev" onclick="navSlide(-1)"><i class="fas fa-chevron-left"></i> Prev</button>
+                <button class="btn btn-primary px-3" id="btn-next" onclick="navSlide(1)">Next <i class="fas fa-chevron-right"></i></button>
                 <button class="btn btn-success px-4" id="btn-finish" onclick="submitExamButton(false)"><i class="fas fa-check-circle me-1"></i> KIRIM JAWABAN</button>
             </div>
         </div>
         <div class="q-nav-area shadow-sm">
             <h6 class="fw-bold border-bottom pb-2 mb-2 small text-muted">NAVIGASI SOAL</h6>
             <div id="nav-grid" class="q-grid"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalClassroom" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white"><h5 class="modal-title">Manajemen Ruang Kelas</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <form id="frm-classroom" onsubmit="event.preventDefault(); saveClassroom(); return false;">
+                    <input type="hidden" id="cls-id" name="classroomId">
+                    <div class="mb-3">
+                        <label class="small fw-bold">Judul Materi / Sesi</label>
+                        <div class="input-group">
+                            <input type="text" name="judul" id="cls-judul" class="form-control" required placeholder="Contoh: Pengantar Algoritma">
+                            <button type="button" class="btn btn-outline-info" id="btn-generate-materi" onclick="runAutoGenerateMateri()" title="Generate Template Deskripsi Otomatis">
+                                <i class="fas fa-magic"></i> Generate Deskripsi
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mb-3"><label class="small fw-bold">Deskripsi Tambahan</label><textarea name="deskripsi" id="cls-deskripsi" class="form-control" rows="8" placeholder="Jelaskan instruksi atau info materi di sini"></textarea></div>
+                    <div class="mb-3"><label class="small fw-bold">Link Video (YouTube)</label><input type="url" name="linkVideo" id="cls-video" class="form-control" placeholder="https://www.youtube.com/watch?v=..."></div>
+                    <div class="mb-3"><label class="small fw-bold">Link Video Conference (Google Meet / Zoom)</label><input type="url" name="linkMeet" id="cls-meet" class="form-control" placeholder="https://meet.google.com/..."></div>
+                    <div class="mb-4">
+                        <label class="small fw-bold">Target Kelas</label>
+                        <input type="text" name="targetKelas" id="cls-kelas" class="form-control" placeholder="Ketik kelas (Contoh: 7A, 7B, atau All)" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">SIMPAN MATERI</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalViewClassroom" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white"><h5 class="modal-title" id="view-cls-title">Judul Materi</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body bg-light">
+                <div class="row">
+                    <div class="col-lg-8" id="view-cls-video-container"></div>
+                    <div class="col-lg-4 mt-3 mt-lg-0">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body" style="overflow-y: auto;">
+                                <h6 class="fw-bold text-primary border-bottom pb-2">Deskripsi Sesi</h6>
+                                <div id="view-cls-desc" style="white-space: pre-wrap; font-size:14px; color:#475569;"></div>
+                                <hr>
+                                <div id="view-cls-meet-container" class="text-center mt-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalExam" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white"><h5 class="modal-title">Konfigurasi Ujian</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <form id="frm-exam" onsubmit="event.preventDefault(); saveExam(); return false;">
+                    <input type="hidden" id="ex-id" name="examId">
+                    <div class="mb-3"><label class="small fw-bold">Judul Ujian</label><input type="text" name="judul" id="ex-judul" class="form-control" required></div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6"><label class="small fw-bold">Mata Pelajaran</label><input type="text" name="mapel" id="ex-mapel" class="form-control" required></div>
+                        <div class="col-md-6"><label class="small fw-bold">Durasi (Menit)</label><input type="number" name="durasi" id="ex-durasi" class="form-control" required></div>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6"><label class="small fw-bold">Waktu Mulai</label><input type="datetime-local" name="start" id="ex-start" class="form-control" required></div>
+                        <div class="col-md-6"><label class="small fw-bold">Waktu Selesai</label><input type="datetime-local" name="end" id="ex-end" class="form-control" required></div>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="small fw-bold">Target Kelas</label>
+                            <input type="text" name="targetKelas" id="ex-kelas" class="form-control" placeholder="Ketik kelas (Contoh: 7A, 7B, atau All)" required>
+                        </div>
+                        <div class="col-md-6"><label class="small fw-bold">Limit Mengerjakan</label><input type="number" name="limit" id="ex-limit" class="form-control" value="1"></div>
+                    </div>
+                    <div class="d-flex gap-4 mb-3">
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="showStats" id="ex-showStats" value="Yes"><label class="small">Tampilkan Nilai</label></div>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="randomQ" id="ex-randomQ" value="Yes"><label class="small">Acak Soal</label></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">SIMPAN JADWAL</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalQ" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-white shadow-sm">
+                <h5 class="modal-title fw-bold text-primary">Editor Soal</h5><button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="container" style="max-width:900px">
+                    <div id="q-list-container"></div>
+                    <div class="text-center mt-5 mb-5"><button class="btn btn-lg btn-success rounded-pill px-5 shadow" onclick="addNewQuestionBlock()"><i class="fas fa-plus-circle me-2"></i> TAMBAH SOAL</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalUser" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white"><h5 class="modal-title">User Editor</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <form id="frm-user" onsubmit="event.preventDefault(); saveUser(); return false;">
+                    <input type="hidden" id="mu-id">
+                    <input type="text" id="mu-nama" class="form-control mb-2" placeholder="Nama Lengkap" required>
+                    <input type="text" id="mu-user" class="form-control mb-2" placeholder="Username" required>
+                    <input type="text" id="mu-pass" class="form-control mb-2" placeholder="Password" required>
+                    <div class="row g-2 mb-2">
+                        <div class="col"><select id="mu-role" class="form-select"><option value="siswa">Siswa</option><option value="guru">Guru</option><option value="admin">Admin</option></select></div>
+                        <div class="col"><input type="text" id="mu-kelas" class="form-control" placeholder="Kelas"></div>
+                    </div>
+                    <input type="text" id="mu-sekolah" class="form-control mb-2" placeholder="Sekolah (Opsional)">
+                    <button type="submit" class="btn btn-success w-100 mt-3">Simpan User</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -189,43 +326,71 @@ body.exam-mode { overflow: hidden; user-select: none; }
 
 <script>
 // ==========================================
-// KONFIGURASI PENTING (API LINK)
+// CONFIG: GANTI URL DI BAWAH INI
 // ==========================================
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx86mIDIH5dctFNJ9bdxqtczThyYn7c_ZNFE0kMlkmtw4DRM5qVIMUEfZRpFPBLl6aX/exec'; 
 
-// --- VARIABEL GLOBAL ---
-let examSubmitting = false; let user = null; let gData = {}; let activeExamId = null;
-let timerInt, monitorInterval, autosaveInterval; let totalQ = 0, currentQIdx = 0;
-let violationCount = 0; const maxViolations = 3; let isExamFinished = false;
+let examSubmitting = false;
+let user = null;
+let gData = {};
+let activeExamId = null;
+let timerInt, monitorInterval, autosaveInterval;
+let totalQ = 0;
+let currentQuestionsData = []; 
+let currentQIdx = 0;
+let activeUid = '';
+let recapAllData = [];
+let recapDataStore = {};
+let violationCount = 0;
+const maxViolations = 3;
+let isExamFinished = false;
+let violationLock = false;
 
-// --- API FETCHER (PENGGANTI google.script.run) ---
+const snConfig = { height: 180, toolbar: [['style', ['bold', 'italic', 'underline', 'clear']], ['para', ['ul', 'ol']], ['insert', ['picture', 'table']]] };
+
+// --- CORE API FETCHER ---
 async function fetchAPI(payload) {
     if(user) payload.caller = { ID: user.ID, Role: user.Role, Kelas: user.Kelas };
     try {
         const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
         return await response.json();
     } catch (e) {
-        return { status: 'error', msg: 'Koneksi ke server gagal. Cek internet Anda.' };
+        return { status: 'error', msg: 'Koneksi ke server terputus.' };
     }
 }
 
-// --- INIT & SESI ---
 $(document).ready(() => {
-    // Mata Login
-    $('#togglePassword').click(function(){
-        const p = $('#p-login'); p.attr('type', p.attr('type') === 'password' ? 'text' : 'password');
-        $(this).toggleClass('fa-eye fa-eye-slash');
-    });
-
+    $('#togglePassword').click(function(){ const p=$('#p-login'); p.attr('type', p.attr('type')==='password'?'text':'password'); $(this).toggleClass('fa-eye fa-eye-slash'); });
     const savedUser = localStorage.getItem('cbt_user');
-    if(savedUser) { user = JSON.parse(savedUser); initDash(); checkResumeExam(); }
+    if(savedUser) {
+        user = JSON.parse(savedUser);
+        $('#logo-container img').attr('src', user.LogoUrl || 'https://via.placeholder.com/100');
+        initDash();
+        checkResumeExam();
+    }
 });
+
+function checkResumeExam() {
+    const savedExam = localStorage.getItem('cbt_active_exam');
+    if(savedExam) {
+        try {
+            const examState = JSON.parse(savedExam);
+            if(examState && examState.id) {
+                Swal.fire({ title: 'Lanjutkan Ujian?', text: 'Terdeteksi sesi ujian yang belum selesai.', icon: 'info', confirmButtonText: 'Lanjutkan', allowOutsideClick: false }).then(() => {
+                    activeExamId = examState.id; totalQ = examState.qs.length;
+                    $('#do-exam-title').html(`${examState.judul} <span class="mx-2">|</span> ${user.Nama}`);
+                    enableSecurity(); runExam(examState.qs, examState.dur, true);
+                });
+            }
+        } catch(e) { localStorage.removeItem('cbt_active_exam'); }
+    }
+}
 
 function toggleSidebar() { $('#sidebar').toggleClass('active'); $('#sidebar-overlay').toggleClass('active'); }
 function showLoad(s) { s ? $('#loader').removeClass('hidden') : $('#loader').addClass('hidden'); }
 function toast(icon, title) { Swal.mixin({toast: true, position: 'top-end', showConfirmButton: false, timer: 3000}).fire({icon: icon, title: title}); }
 
-// --- 1. AUTH & PROFIL ---
+// --- AUTH & PROFIL ---
 async function handleLogin() {
     showLoad(true);
     const res = await fetchAPI({ action: 'login', username: $('#u-login').val(), password: $('#p-login').val() });
@@ -234,47 +399,46 @@ async function handleLogin() {
     if(res.status === 'success') {
         user = res.data; user.LogoUrl = res.logo;
         localStorage.setItem('cbt_user', JSON.stringify(user));
+        if(res.logo) $('#logo-container img').attr('src', res.logo);
         initDash();
     } else Swal.fire('Gagal', res.msg, 'error');
 }
 
 function handleLogout() {
-    Swal.fire({ title: 'Logout?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya' }).then((r) => {
-        if(r.isConfirmed) { localStorage.clear(); window.location.reload(); }
+    Swal.fire({ title: 'Logout?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya', cancelButtonText: 'Batal' }).then((r) => {
+        if(r.isConfirmed) {
+            localStorage.clear(); user = null;
+            clearInterval(timerInt); clearInterval(monitorInterval); clearInterval(autosaveInterval);
+            window.location.reload();
+        }
     });
 }
 
 function initDash() {
     $('#view-auth').hide(); $('#view-dashboard').removeClass('hidden');
-    $('#u-name-disp').text(user.Nama); $('#user-role-disp').text(user.Role.toUpperCase());
+    $('#u-name-disp').text(user.Nama); 
+    const role = String(user.Role || '').trim().toLowerCase();
+    $('#user-role-disp').text(role.toUpperCase());
     if(user.FotoUrl || user.Foto) $('#sidebar-user-img').attr('src', user.FotoUrl || user.Foto);
-    if(user.LogoUrl) $('#logo-container img').attr('src', user.LogoUrl);
     
     $('.components').addClass('hidden');
-    if(user.Role === 'siswa') { $('#menu-siswa').removeClass('hidden'); loadPage('siswa-home'); } 
-    else if(user.Role === 'guru') { $('#menu-guru').removeClass('hidden'); loadPage('admin-home'); } 
-    else { $('#menu-admin').removeClass('hidden'); loadPage('admin-home'); }
+    if(role === 'siswa') { $('#menu-siswa').removeClass('hidden'); loadPage('siswa-home'); } 
+    else if(role === 'guru') { $('#menu-guru').removeClass('hidden'); loadPage('admin-home'); } 
+    else if(role === 'admin') { $('#menu-admin').removeClass('hidden'); loadPage('admin-home'); } 
+    else Swal.fire('Akses Ditolak', 'Role akun Anda tidak dikenali.', 'error');
 }
 
 function openProfileModal() {
     $('#modalProfile').modal('show'); $('#prof-nama').val(user.Nama); $('#prof-pass').val(''); $('#prof-b64').val('');
     $('#prof-preview').attr('src', user.FotoUrl || user.Foto || 'https://via.placeholder.com/100');
 }
-
-function previewProfileImage(input) {
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) { $('#prof-preview').attr('src', e.target.result); $('#prof-b64').val(e.target.result); }
-        reader.readAsDataURL(input.files[0]);
-    }
-}
+function previewProfileImage(input) { if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = function(e) { $('#prof-preview').attr('src', e.target.result); $('#prof-b64').val(e.target.result); }; reader.readAsDataURL(input.files[0]); } }
 function toggleProfPass() { const p = $('#prof-pass'); p.attr('type', p.attr('type') === 'password' ? 'text' : 'password'); $('#icon-prof-pass').toggleClass('fa-eye fa-eye-slash'); }
 
 async function saveProfile() {
     $('#btn-save-profile').prop('disabled', true).text('MENYIMPAN...');
     const res = await fetchAPI({ action: 'updateProfile', nama: $('#prof-nama').val(), password: $('#prof-pass').val(), foto: $('#prof-b64').val() });
     $('#btn-save-profile').prop('disabled', false).text('SIMPAN PERUBAHAN');
-    
     if(res.status === 'success') {
         user = res.user; localStorage.setItem('cbt_user', JSON.stringify(user));
         $('#u-name-disp').text(user.Nama); if(user.Foto) $('#sidebar-user-img').attr('src', user.Foto);
@@ -282,105 +446,414 @@ async function saveProfile() {
     } else Swal.fire('Gagal', res.msg, 'error');
 }
 
-// --- 2. ROUTING DASHBOARD ---
+function appRefresh() { const activeLink = $('.nav-link.active'); if (activeLink.length > 0) { const onclickAttr = activeLink.attr('onclick'); if(onclickAttr) { const match = onclickAttr.match(/'([^']+)'/); if(match) loadPage(match[1]); } } }
+
 async function loadPage(page) {
+    clearInterval(timerInt); clearInterval(monitorInterval); clearInterval(autosaveInterval);
     disableSecurity();
     $('#view-exam').addClass('hidden'); $('#view-dashboard').removeClass('hidden'); $('body').removeClass('exam-mode');
     $('#page-title').text(page.replace('-', ' ').toUpperCase());
     $('.nav-link').removeClass('active'); $(`a[onclick="loadPage('${page}')"]`).addClass('active');
-    if(window.innerWidth <= 768) toggleSidebar();
-    
+    if(window.innerWidth <= 768) { $('#sidebar').removeClass('active'); $('#sidebar-overlay').removeClass('active'); }
+
+    if(page === 'guru-monitoring') { renderMonitoring(); return; }
+
     showLoad(true);
-    let action = 'getDashboardData'; // Default
+    let action = 'getDashboardData';
     if(page === 'admin-users') action = 'getUserList';
     else if(page === 'admin-classroom' || page === 'siswa-classroom') action = 'getClassroomData';
     else if(page === 'hasil-rekap') action = 'getRecapList';
-    else if(page === 'guru-monitoring') { showLoad(false); /* Logic Monitoring */ return; }
-
+    
     const res = await fetchAPI({ action: action });
     showLoad(false);
-    
-    if (res.status === 'success') {
-        gData = res.data;
-        if(page === 'admin-home' || page === 'siswa-home' || page === 'admin-ujian') renderDashboardData(page);
-        else if(page === 'admin-users') renderUsers(res.data);
-        else if(page === 'admin-classroom' || page === 'siswa-classroom') renderClassroom(page, res.data);
-        else if(page === 'hasil-rekap') renderRecapList(res.data);
-    } else Swal.fire('Error', res.msg, 'error');
-}
 
-function renderDashboardData(page) {
-    const area = $('#content-area');
-    if (page === 'admin-home') area.html(`<div class="row g-4"><div class="col-md-4"><div class="card p-4 shadow-sm border-start border-primary border-4"><h2>${gData.stats.totalSiswa}</h2><p>Total Siswa Aktif</p></div></div><div class="col-md-4"><div class="card p-4 shadow-sm border-start border-success border-4"><h2>${gData.stats.totalUjian}</h2><p>Total Ujian</p></div></div></div>`);
-    else if (page === 'siswa-home') {
-        let h = `<div class="alert alert-primary shadow-sm mb-4"><h4>Halo, ${user.Nama}</h4></div><div class="row g-3">`;
-        (gData.availableExams||[]).forEach(e => {
-            let btn = e.IsFinished ? `<button class="btn btn-secondary w-100 mt-2" disabled>Selesai</button>` : `<button class="btn btn-success w-100 mt-2 shadow-sm fw-bold" onclick="startExam('${e.ExamID}')">MULAI UJIAN</button>`;
-            h += `<div class="col-md-4"><div class="card shadow-sm"><div class="card-body"><h5>${e.Judul}</h5><p class="text-muted small">${e.Mapel} | ${e.Durasi} Menit</p>${btn}</div></div></div>`;
-        });
-        area.html(h + `</div>`);
-    } else if (page === 'admin-ujian') {
-        area.html(`<div class="alert alert-info">Fitur manajemen ujian aktif. Gunakan format tabel Anda untuk merender ${gData.exams.length} ujian.</div>`);
+    if (res.status === 'success') {
+        if(page === 'admin-users') renderUsers(res.data);
+        else if(page === 'hasil-rekap') { recapAllData = res.data; renderRecapTable(); }
+        else if(page === 'admin-classroom') renderAdminClassroom(res.data);
+        else if(page === 'siswa-classroom') renderSiswaClassroom(res.data);
+        else { gData = res.data; renderContent(page); }
+    } else {
+        Swal.fire('Error', res.msg, 'error');
     }
 }
-function renderUsers(data) { $('#content-area').html(`<div class="alert alert-info">Fitur Data User: Ditemukan ${data.length} User.</div>`); }
-function renderClassroom(page, data) { $('#content-area').html(`<div class="alert alert-info">Ditemukan ${data.length} Sesi Kelas.</div>`); }
-function renderRecapList(data) { $('#content-area').html(`<div class="alert alert-info">Rekap Nilai: Ditemukan ${data.length} hasil ujian.</div>`); }
+
 async function handleSysAction(action) { showLoad(true); const res = await fetchAPI({action:action}); showLoad(false); toast('success', res.msg); }
 
-// --- 3. LOGIKA UJIAN & KEAMANAN ---
-function checkResumeExam() {
-    const state = JSON.parse(localStorage.getItem('cbt_active_exam'));
-    if(state && state.id) {
-        Swal.fire({ title: 'Lanjutkan Ujian?', text: 'Ada sesi ujian tertunda.', icon: 'info', confirmButtonText: 'Lanjutkan', allowOutsideClick: false }).then(() => {
-            activeExamId = state.id; totalQ = state.qs.length; $('#do-exam-title').html(`${state.judul} | ${user.Nama}`);
-            enableSecurity(); runExam(state.qs, state.dur, true);
+// --- RENDER FUNCTIONS ---
+function renderAdminClassroom(data) {
+  let h = `<button class="btn btn-primary mb-3 shadow-sm" onclick="openClassroomModal()">+ Tambah Materi / Kelas Live</button><div class="row g-4">`;
+  if(!data || data.length === 0) h += `<div class="col-12"><div class="alert alert-info">Belum ada kelas/materi yang dibuat.</div></div>`;
+  else {
+    data.forEach(c => {
+      const isOwner = (String(user.Role).trim().toLowerCase() === 'admin' || String(c.PembuatID) === String(user.ID));
+      const safeData = encodeURIComponent(JSON.stringify(c));
+      h += `
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="badge bg-secondary"><i class="fas fa-users me-1"></i> ${c.TargetKelas}</span>
+              <small class="text-muted">${c.WaktuDibuat.substring(0,10)}</small>
+            </div>
+            <h5 class="fw-bold text-dark mb-3">${c.Judul}</h5>
+            <div class="mt-auto d-flex gap-2">
+              ${isOwner ? `
+                <button class="btn btn-sm btn-outline-dark flex-fill" onclick="openClassroomModal('${safeData}')">Edit</button>
+                <button class="btn btn-sm btn-danger flex-fill" onclick="deleteClassroom('${c.ClassroomID}')"><i class="fas fa-trash"></i></button>
+              ` : `<div class="alert alert-light small m-0 p-1 text-center w-100">Read Only</div>`}
+            </div>
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+  h += `</div>`; $('#content-area').html(h);
+}
+
+function renderSiswaClassroom(data) {
+  let h = `<h5 class="fw-bold mb-3 border-bottom pb-2"><i class="fas fa-video me-2"></i>Materi & Kelas Live</h5><div class="row g-4 mb-5">`;
+  if(!data || data.length === 0) h += `<div class="col-12"><div class="alert alert-info text-center">Tidak ada materi kelas yang tersedia.</div></div>`;
+  else {
+    data.forEach(c => {
+      const safeData = encodeURIComponent(JSON.stringify(c)); let icons = [];
+      if(c.LinkVideo && c.LinkVideo.trim() !== '') icons.push('<i class="fab fa-youtube text-danger me-1"></i> Video');
+      if(c.LinkMeet && c.LinkMeet.trim() !== '') icons.push('<i class="fas fa-video text-primary me-1"></i> Live Meet');
+      h += `
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0 border-start border-4 border-primary">
+          <div class="card-body">
+            <h5 class="fw-bold text-dark">${c.Judul}</h5>
+            <div class="mb-3 small text-muted">${icons.join(' | ') || 'Materi Teks'}</div>
+            <button class="btn btn-primary w-100 fw-bold shadow-sm" onclick="viewClassroom('${safeData}')">BUKA KELAS</button>
+          </div>
+        </div>
+      </div>`;
+    });
+  }
+  h += `</div>`; $('#content-area').html(h);
+}
+
+function openClassroomModal(str) { 
+  $('#modalClassroom').modal('show');
+  if(str) { 
+    const d = JSON.parse(decodeURIComponent(str)); 
+    $('#cls-id').val(d.ClassroomID); $('#cls-judul').val(d.Judul); $('#cls-deskripsi').val(d.Deskripsi); 
+    $('#cls-video').val(d.LinkVideo); $('#cls-meet').val(d.LinkMeet); $('#cls-kelas').val(d.TargetKelas);
+  } else { 
+    $('#modalClassroom form')[0].reset(); $('#cls-id').val('');
+    if(String(user.Role).trim().toLowerCase() === 'guru') $('#cls-kelas').val(user.Kelas);
+  } 
+}
+
+async function runAutoGenerateMateri() {
+  const judul = $('#cls-judul').val();
+  if(!judul) return Swal.fire('Perhatian', 'Ketik Judul Materi terlebih dahulu!', 'warning');
+  const btn = $('#btn-generate-materi'); const originalText = btn.html();
+  btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+  
+  const res = await fetchAPI({ action: 'autoGenerateMateriText', judul: judul });
+  btn.prop('disabled', false).html(originalText);
+  if(res.status === 'success') { $('#cls-deskripsi').val(res.data); toast('success', 'Template Dibuat!'); }
+  else Swal.fire('Error', res.msg, 'error');
+}
+
+async function saveClassroom() {
+  const formEl = document.getElementById('frm-classroom'); const fd = new FormData(formEl); const d = Object.fromEntries(fd.entries());
+  if(!d.judul || !d.targetKelas) return Swal.fire('Error', 'Judul dan Target Kelas wajib diisi!', 'error');
+  
+  showLoad(true);
+  const res = await fetchAPI({ action: 'adminSaveClassroom', data: d });
+  showLoad(false);
+  if(res.status === 'success') { $('#modalClassroom').modal('hide'); toast('success', 'Materi Disimpan!'); loadPage('admin-classroom'); } 
+  else Swal.fire('Gagal', res.msg, 'error');
+}
+
+function deleteClassroom(id) {
+  Swal.fire({title:'Hapus Materi?', icon:'warning', showCancelButton:true}).then(async r=>{
+    if(r.isConfirmed) { showLoad(true); await fetchAPI({ action: 'adminDeleteClassroom', id: id }); showLoad(false); loadPage('admin-classroom'); }
+  });
+}
+
+function viewClassroom(str) {
+  const d = JSON.parse(decodeURIComponent(str));
+  $('#view-cls-title').text(d.Judul);
+  let descText = d.Deskripsi || "Tidak ada deskripsi tambahan.";
+  descText = descText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>');
+  $('#view-cls-desc').html(descText);
+  
+  let videoHtml = '';
+  if(d.LinkVideo && d.LinkVideo.trim() !== '') {
+    let embedUrl = d.LinkVideo;
+    if(embedUrl.includes('youtube.com/watch?v=')) { embedUrl = embedUrl.replace('watch?v=', 'embed/'); const amp = embedUrl.indexOf('&'); if(amp !== -1) embedUrl = embedUrl.substring(0, amp); } 
+    else if (embedUrl.includes('youtu.be/')) embedUrl = embedUrl.replace('youtu.be/', 'www.youtube.com/embed/');
+    videoHtml = `<div class="video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>`;
+  } else videoHtml = `<div class="alert alert-secondary text-center py-5"><i class="fas fa-video-slash fa-3x mb-3 text-muted"></i><br>Tidak ada materi video.</div>`;
+  $('#view-cls-video-container').html(videoHtml);
+  
+  let meetHtml = '';
+  if(d.LinkMeet && d.LinkMeet.trim() !== '') meetHtml = `<p class="small text-muted mb-2">Sesi Live Interaktif</p><a href="${d.LinkMeet}" target="_blank" class="btn btn-success btn-lg w-100 rounded-pill shadow-sm"><i class="fas fa-video me-2"></i> JOIN VIDEO CONFERENCE</a>`;
+  else meetHtml = `<p class="small text-muted mb-0">Tidak ada jadwal live meet untuk sesi ini.</p>`;
+  $('#view-cls-meet-container').html(meetHtml);
+  $('#modalViewClassroom').modal('show');
+}
+
+function renderUsers(users) {
+    const cleanRole = String(user.Role).trim().toLowerCase();
+    const isAdmin = cleanRole === 'admin';
+    let h = `<div class="d-flex justify-content-between mb-3">
+    ${isAdmin ? `<button class="btn btn-success shadow-sm" onclick="$('#modalUser').modal('show');$('#modalUser form')[0].reset();$('#mu-id').val('');">+ Tambah User</button>` : `<h5 class="fw-bold text-primary mb-0"><i class="fas fa-users me-2"></i>Data Siswa Kelas Anda</h5>`}
+    <input type="text" id="user-search" class="form-control ${isAdmin ? 'w-50' : 'w-50'}" placeholder="Cari Siswa..." onkeyup="filterTable('tbl-users', this.value)">
+    </div>
+    <div class="card border-0 shadow-sm"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0" id="tbl-users">
+    <thead class="table-light"><tr><th>Nama</th><th>Username</th><th>Role</th><th>Kelas</th>${isAdmin ? '<th>Aksi</th>' : ''}</tr></thead><tbody>`;
+    users.forEach(u => {
+        const safeData = encodeURIComponent(JSON.stringify(u));
+        h += `<tr><td class="fw-bold">${u.Nama}</td><td>${u.Username}</td><td><span class="badge bg-${String(u.Role).trim().toLowerCase()==='admin'?'danger':(String(u.Role).trim().toLowerCase()==='guru'?'warning':'primary')}">${u.Role}</span></td><td>${u.Kelas || '-'}</td>${isAdmin ? `<td><button class="btn btn-sm btn-outline-dark me-1" onclick="editUser('${safeData}')"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-outline-danger" onclick="delUser('${u.ID}')"><i class="fas fa-trash"></i></button></td>` : ''}</tr>`;
+    });
+    h += `</tbody></table></div></div></div>`; $('#content-area').html(h);
+}
+
+function renderRecapTable() {
+    const uniqueKelas = [...new Set(recapAllData.map(item => item.KelasSiswa))].sort();
+    const uniqueUjian = [...new Set(recapAllData.map(item => item.JudulUjian))].sort();
+    let h = `<div class="d-flex justify-content-between align-items-center mb-3"><h5 class="fw-bold mb-0 text-primary"><i class="fas fa-chart-bar me-2"></i>Rekapitulasi Nilai</h5><button class="btn btn-success shadow-sm" onclick="printFilteredRecap()"><i class="fas fa-print me-2"></i>Cetak Rekap</button></div>
+    <div class="row g-2 mb-3"><div class="col-md-4"><select id="filter-ujian" class="form-select" onchange="applyFilter()"><option value="">Semua Ujian</option>${uniqueUjian.map(u => `<option value="${u}">${u}</option>`).join('')}</select></div><div class="col-md-4"><select id="filter-kelas" class="form-select" onchange="applyFilter()"><option value="">Semua Kelas</option>${uniqueKelas.map(k => `<option value="${k}">${k}</option>`).join('')}</select></div><div class="col-md-4"><input type="text" id="filter-search" class="form-control" placeholder="Cari Nama Siswa..." onkeyup="applyFilter()"></div></div>
+    <div class="card border-0 shadow-sm"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover align-middle mb-0" id="tbl-rekap"><thead class="table-light"><tr><th>Waktu</th><th>Nama Siswa</th><th>Kelas</th><th>Mata Pelajaran</th><th>Nilai</th><th>Aksi</th></tr></thead><tbody id="tbl-rekap-body"></tbody></table></div></div></div>`;
+    $('#content-area').html(h); applyFilter();
+}
+
+function applyFilter() {
+    const fUjian = $('#filter-ujian').val(); const fKelas = $('#filter-kelas').val(); const fSearch = $('#filter-search').val().toLowerCase();
+    const tbody = $('#tbl-rekap-body'); tbody.empty(); recapDataStore = {};
+    const filtered = recapAllData.filter(item => { if(fUjian && item.JudulUjian !== fUjian) return false; if(fKelas && item.KelasSiswa !== fKelas) return false; if(fSearch && !item.NamaSiswa.toLowerCase().includes(fSearch)) return false; return true; });
+    window.currentFilteredData = filtered;
+    if(filtered.length === 0) { tbody.html('<tr><td colspan="6" class="text-center p-3">Tidak ada data ditemukan.</td></tr>'); return; }
+    filtered.forEach(r => { recapDataStore[r.ResultID] = { detail: r.Detail, nama: r.NamaSiswa, ujian: r.JudulUjian, nilai: r.TotalNilai }; tbody.append(`<tr><td class="small text-muted">${r.WaktuSubmit}</td><td><div class="fw-bold">${r.NamaSiswa}</div></td><td>${r.KelasSiswa}</td><td>${r.Mapel} <br><small class="text-muted">${r.JudulUjian}</small></td><td><span class="badge bg-primary fs-6">${r.TotalNilai}</span></td><td><button class="btn btn-sm btn-outline-success me-1" onclick="printRecap('${r.ResultID}')"><i class="fas fa-print"></i></button><button class="btn btn-sm btn-outline-danger" onclick="deleteResult('${r.ResultID}')"><i class="fas fa-trash"></i></button></td></tr>`); });
+}
+
+function printFilteredRecap() { /* (Logika Print Tetap Sama, Tidak Membutuhkan Apps Script API) */
+    if(!window.currentFilteredData || window.currentFilteredData.length === 0) return Swal.fire('Data Kosong', 'Tidak ada data nilai yang tampil.', 'info');
+    const fUjian = $('#filter-ujian').val() || 'Semua Ujian'; const fKelas = $('#filter-kelas').val() || 'Semua Kelas';
+    let html = `<html><head><title>Cetak Rekap</title><style>body{font-family:'Times New Roman',Times,serif;padding:30px}h2,h4{text-align:center;margin:5px 0}table{width:100%;border-collapse:collapse;margin-top:15px;font-size:14px}th,td{border:1px solid black;padding:8px}th{background:#f2f2f2}.text-center{text-align:center}.signature{margin-top:50px;width:100%;text-align:right}.signature div{display:inline-block;text-align:center;width:250px}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="margin-bottom:15px;text-align:right;"><button onclick="window.print()">Cetak</button></div><h4><img src="${user.LogoUrl || ''}" width="100"></h4><hr><h2>REKAPITULASI HASIL UJIAN</h2><p>Ujian: ${fUjian}<br>Kelas: ${fKelas}</p><table><thead><tr><th>No</th><th>Waktu</th><th>Nama</th><th>Kelas</th><th>Mata Pelajaran</th><th>Nilai</th></tr></thead><tbody>`;
+    window.currentFilteredData.forEach((r, i) => html += `<tr><td class="text-center">${i + 1}</td><td class="text-center">${r.WaktuSubmit}</td><td>${r.NamaSiswa}</td><td class="text-center">${r.KelasSiswa}</td><td>${r.Mapel} - ${r.JudulUjian}</td><td class="text-center" style="font-weight: bold;">${r.TotalNilai}</td></tr>`);
+    html += `</tbody></table><div class="signature"><div><p>${new Date().toLocaleDateString('id-ID')}</p><p style="margin-bottom:70px">Pengawas</p><p>_______________________</p></div></div><script>window.onload=function(){window.print()}<\/script></body></html>`;
+    const printWin = window.open('','','width=900,height=700'); printWin.document.write(html); printWin.document.close();
+}
+
+function printRecap(rid) { /* (Logika Print Rincian Sama) */
+    const d = recapDataStore[rid]; if(!d) return; let detailArr = []; try { detailArr = JSON.parse(d.detail); } catch(e) {}
+    let detailHtml = '<table class="data-table"><thead><tr><th width="10%">No</th><th>Jawaban Siswa</th><th>Kunci Jawaban</th><th width="10%">Skor</th></tr></thead><tbody>';
+    detailArr.forEach(item => { let n = item.i !== undefined ? item.i : item[0]; let s = item.s !== undefined ? item.s : item[1]; let a = item.a !== undefined ? item.a : '-'; let k = item.k !== undefined ? item.k : '-'; detailHtml += `<tr><td style="text-align:center">${n}</td><td>${a}</td><td>${k}</td><td style="text-align:center">${s}</td></tr>`; }); detailHtml += '</tbody></table>';
+    const printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write(`<html><head><title>Hasil - ${d.nama}</title><style>body{font-family:'Times New Roman',Times,serif;padding:40px;color:#333}.header{text-align:center;border-bottom:3px solid #000;padding-bottom:10px;margin-bottom:20px}.score-box{border:2px solid #000;padding:15px;text-align:center;margin-bottom:20px;width:200px;float:right;background:#fafafa}.score-box .score{font-size:38px;font-weight:bold}.data-table{width:100%;border-collapse:collapse;margin-top:15px}.data-table th,.data-table td{border:1px solid #000;padding:8px;white-space:pre-wrap}.data-table th{background:#f0f0f0}.clearfix::after{content:"";clear:both;display:table}.footer{margin-top:50px;text-align:right}.footer div{display:inline-block;text-align:center;width:250px}@media print{.no-print{display:none}}</style></head><body><div class="no-print" style="text-align:right;margin-bottom:20px"><button onclick="window.print()">Cetak Dokumen</button></div><div class="header"><h2>HASIL UJIAN CBT</h2></div><div class="clearfix"><div class="score-box"><h3>NILAI AKHIR</h3><div class="score">${d.nilai}</div></div><table style="font-size:15px;margin-bottom:20px"><tr><td width="150"><strong>Nama Peserta</strong></td><td>: ${d.nama}</td></tr><tr><td><strong>Mata Pelajaran</strong></td><td>: ${d.ujian}</td></tr></table></div><h4>Rincian Skor</h4>${detailHtml}<div class="footer"><div><p>${new Date().toLocaleDateString('id-ID')}</p><p style="margin-bottom:70px">Pengawas</p><p>_______________________</p></div></div><script>window.onload=function(){window.print()}<\/script></body></html>`);
+    printWindow.document.close();
+}
+
+function renderContent(page) {
+    const area = $('#content-area'); let h = '';
+    if (page === 'admin-home') {
+        h = `<div class="row g-4"><div class="col-md-4"><div class="card p-3 shadow-sm border-0 border-start border-4 border-primary"><h3>${gData.stats.totalSiswa}</h3><small>Siswa di Kelas Anda</small></div></div><div class="col-md-4"><div class="card p-3 shadow-sm border-0 border-start border-4 border-success"><h3>${gData.stats.totalUjian}</h3><small>Ujian Saya</small></div></div></div>`;
+    } else if (page === 'admin-ujian') {
+        h = `<button class="btn btn-primary mb-3 shadow-sm" onclick="openExamModal()">+ Buat Jadwal Baru</button><div class="row g-4">`;
+        gData.exams.forEach(e => {
+            const isOwner = (String(user.Role).trim().toLowerCase() === 'admin' || String(e.PembuatID) === String(user.ID));
+            const actionButtons = isOwner ? `<button class="btn btn-sm btn-outline-dark flex-fill" onclick="openExamModal('${encodeURIComponent(JSON.stringify(e))}')">Edit</button><button class="btn btn-sm btn-outline-primary flex-fill" onclick="manageQ('${e.ExamID}')"><i class="fas fa-list me-1"></i> Soal</button><button class="btn btn-sm btn-danger" onclick="delExam('${e.ExamID}')"><i class="fas fa-trash"></i></button>` : `<div class="alert alert-light small m-0 p-1 text-center w-100">Read Only</div>`;
+            h += `<div class="col-md-6 col-lg-4"><div class="card h-100 shadow-sm border-0"><div class="card-body"><div class="d-flex justify-content-between mb-2"><span class="badge bg-primary">${e.Mapel}</span><span class="badge bg-light text-dark border">${e.TargetKelas}</span></div><h5 class="fw-bold text-dark">${e.Judul}</h5><div class="d-flex gap-2">${actionButtons}</div></div></div></div>`;
         });
+        h += '</div>';
+    } else if (page === 'siswa-home') {
+        h = `<div class="card mb-4 border-0 shadow-sm bg-primary text-white"><div class="card-body"><h5 class="fw-bold">Halo, ${user.Nama}</h5></div></div><h5 class="fw-bold mb-3 border-bottom pb-2">Ujian Aktif</h5><div class="row g-4 mb-5">`;
+        if(!gData.availableExams || gData.availableExams.length === 0) h += '<div class="col-12"><div class="alert alert-info text-center">Tidak ada ujian aktif saat ini.</div></div>';
+        else {
+            gData.availableExams.forEach(e => {
+                let btnState = '', btnText = 'MULAI UJIAN', btnClass = 'btn-primary';
+                if (e.IsFinished) { btnState = 'disabled'; btnText = 'SUDAH DIKERJAKAN'; btnClass = 'btn-secondary'; }
+                h += `<div class="col-md-6 col-lg-4"><div class="card h-100 shadow-sm border-0"><div class="card-body"><h5 class="fw-bold text-primary">${e.Judul}</h5><div class="mb-2"><span class="badge bg-info">${e.Mapel}</span> <span class="badge bg-light text-dark border">${e.Durasi} Menit</span></div><button class="btn ${btnClass} w-100 fw-bold shadow-sm" onclick="startExam('${e.ExamID}')" ${btnState}>${btnText}</button></div></div></div>`;
+            });
+        }
+        h += '</div><h5 class="fw-bold mb-3 border-bottom pb-2 mt-4"><i class="fas fa-history me-2"></i>Riwayat</h5>';
+        if(!gData.history || gData.history.length === 0) h += '<p class="text-muted fst-italic">Belum ada riwayat.</p>';
+        else {
+            h += `<div class="table-responsive bg-white rounded shadow-sm p-3"><table class="table table-hover align-middle mb-0"><thead><tr><th>Tanggal</th><th>Ujian</th><th>Nilai</th><th>Status</th></tr></thead><tbody>`;
+            gData.history.forEach(r => { h += `<tr><td>${r.WaktuSubmit}</td><td><div class="fw-bold">${r.Judul}</div></td><td><span class="badge bg-warning text-dark">${r.Nilai}</span></td><td><span class="badge bg-success">Selesai</span></td></tr>`; });
+            h += `</tbody></table></div>`;
+        }
+    }
+    area.html(h);
+}
+
+function openExamModal(str) { 
+  $('#modalExam').modal('show');
+  if(str) { 
+    const d = JSON.parse(decodeURIComponent(str)); 
+    $('#ex-id').val(d.ExamID); $('#ex-judul').val(d.Judul); $('#ex-mapel').val(d.Mapel); $('#ex-durasi').val(d.Durasi);
+    $('#ex-limit').val(d.Limit); $('#ex-start').val(d.StartDate.replace(' ','T')); $('#ex-end').val(d.EndDate.replace(' ','T')); $('#ex-kelas').val(d.TargetKelas);
+    $('#ex-randomQ').prop('checked', d.RandomQ === 'Yes'); $('#ex-showStats').prop('checked', d.ShowStats === 'Yes');
+  } else { 
+    $('#modalExam form')[0].reset(); $('#ex-id').val('');
+    if(String(user.Role).trim().toLowerCase() === 'guru') $('#ex-kelas').val(user.Kelas); 
+  }
+}
+
+async function saveExam() {
+    const formEl = document.getElementById('frm-exam'); const fd = new FormData(formEl); const d = Object.fromEntries(fd.entries());
+    d.showStats = $('#ex-showStats').is(':checked') ? 'Yes' : 'No'; d.randomQ = $('#ex-randomQ').is(':checked') ? 'Yes' : 'No';
+    if(!d.judul || !d.mapel || !d.start || !d.end) return Swal.fire('Error', 'Lengkapi data!', 'error');
+    
+    showLoad(true);
+    const res = await fetchAPI({ action: 'adminSaveExam', data: d });
+    if(res.status === 'success') { $('#modalExam').modal('hide'); toast('success', 'Jadwal Disimpan!'); loadPage('admin-ujian'); } 
+    else { showLoad(false); Swal.fire('Gagal', res.msg, 'error'); }
+}
+
+function delExam(id){ Swal.fire({title:'Hapus Jadwal?', icon:'warning', showCancelButton:true}).then(async r=>{if(r.isConfirmed){ showLoad(true); await fetchAPI({action:'adminDeleteExam', id:id}); showLoad(false); loadPage('admin-ujian'); }}) }
+
+function manageQ(id) { activeExamId = id; $('#modalQ').modal('show'); loadQList(); }
+let lastQuestionNum = 0;
+
+async function loadQList() {
+    $('#q-list-container').html('<div class="text-center p-5"><div class="spinner"></div></div>');
+    const res = await fetchAPI({ action: 'getExamQuestions', examId: activeExamId });
+    if (res.status === 'success') {
+        const qs = res.data || [];
+        let html = ''; lastQuestionNum = 0; currentQuestionsData = qs;
+        let topActions = `<div class="d-flex justify-content-end mb-3 gap-2"><button class="btn btn-info text-white shadow-sm" onclick="previewAllQ()"><i class="fas fa-eye me-1"></i> Preview</button><button class="btn btn-primary shadow-sm" onclick="downloadAllQ()"><i class="fas fa-download me-1"></i> Download</button></div>`;
+        if (qs.length > 0) { lastQuestionNum = Math.max(...qs.map(q => Number(q.Nomor) || 0)); qs.forEach((q, idx) => { html += renderQuestionBlock(q, idx); }); $('#q-list-container').html(topActions + html); } 
+        else $('#q-list-container').html(topActions + '<div class="alert alert-info text-center">Belum ada soal. Klik Tambah Soal.</div>');
     }
 }
 
-async function startExam(eid) {
-    Swal.fire({ title: 'Mulai Ujian?', text: "Keluar layar ujian 3x akan otomatis Submit!", icon: 'warning', showCancelButton: true, confirmButtonText: '🚀 MULAI' }).then(async r => {
+function addNewQuestionBlock() { lastQuestionNum++; const newBlock = renderQuestionBlock({ Nomor: lastQuestionNum }, lastQuestionNum - 1); $('#q-list-container').append(newBlock); const uid = $(newBlock).attr('data-id'); toggleEditQ(uid); $('.modal-body').animate({ scrollTop: $('.modal-body')[0].scrollHeight }, 500); }
+
+// (Fungsi Preview, HTML, dan Match Line generator tetap sesuai logika aslinya untuk menjaga UI Editor yang kompleks)
+function generateQHTML(q) {
+  let inp = '';
+  if(q.Tipe==='PGKK') {
+    const opts = JSON.parse(q.Options||"[]");
+    inp = `<table style="width:100%; border-collapse: collapse; margin-top:15px; background:white;" border="1"><thead><tr style="background:#f8f9fa;"><th style="padding:10px; text-align:left;">PERNYATAAN</th><th width="15%" style="padding:10px; text-align:center;">BENAR</th><th width="15%" style="padding:10px; text-align:center;">SALAH</th></tr></thead><tbody>`;
+    opts.forEach((o,x)=> { inp+=`<tr><td style="padding:10px;">${o}</td><td style="padding:10px; text-align:center; vertical-align:middle;"><input type="radio" name="ans-${q.QID}-${x}" value="B"></td><td style="padding:10px; text-align:center; vertical-align:middle;"><input type="radio" name="ans-${q.QID}-${x}" value="S"></td></tr>`; }); inp += `</tbody></table>`;
+  } else if(q.Tipe==='Menjodohkan') {
+    const lItems = JSON.parse(q.Options||"[]"); let rItems = []; try { rItems = [...JSON.parse(q.Key||"[]")].sort(() => Math.random() - 0.5); } catch(e){}
+    inp = `<div style="display:flex; justify-content:space-between; gap:20px; margin-top:15px;"><div style="flex:1; display:flex; flex-direction:column; gap:10px;">${lItems.map((t)=>`<div style="border:2px solid #e2e8f0; padding:10px; border-radius:8px; background:#fff;">${t}</div>`).join('')}</div><div style="flex:1; display:flex; flex-direction:column; gap:10px;">${rItems.map((t)=>`<div style="border:2px solid #e2e8f0; padding:10px; border-radius:8px; background:#fff;">${t}</div>`).join('')}</div></div>`;
+  } else if(q.Tipe.includes('PG')) {
+    const opts = JSON.parse(q.Options||"[]"); opts.forEach(o => { inp += `<label style="display:flex; align-items:center; border:1px solid #e2e8f0; padding:15px; margin-bottom:10px; border-radius:6px; background:#fff;"><input type="${q.Tipe==='PGK'?'checkbox':'radio'}" name="ans-${q.QID}" style="margin-right:15px;"><div style="flex-grow:1;">${o}</div></label>`; });
+  } else { inp = `<textarea style="width:100%; padding:15px; border:1px solid #e2e8f0; border-radius:6px;" rows="5"></textarea>`; }
+  return `<div style="padding:25px; background:#f8fafc; border-radius:12px; border:1px solid #e2e8f0; margin-bottom:20px;"><div style="background:#1e3a8a; color:white; display:inline-block; padding:5px 15px; border-radius:15px; font-weight:bold; margin-bottom:20px;">Soal No. ${q.Nomor||''}</div><div style="margin-bottom:20px;">${q.Pertanyaan}</div>${inp}</div>`;
+}
+
+function generateAllQHTML() { let allHtml = ''; currentQuestionsData.forEach(q => { allHtml += generateQHTML(q); }); return allHtml; }
+function previewAllQ() { const htmlContent = generateAllQHTML(); if(!htmlContent) return Swal.fire('Kosong', 'Belum ada soal.', 'info'); if($('#modalPreviewQ').length === 0) { $('body').append(`<div class="modal fade" id="modalPreviewQ" tabindex="-1"><div class="modal-dialog modal-xl modal-dialog-scrollable"><div class="modal-content"><div class="modal-header bg-info text-white"><h5 class="modal-title fw-bold">Preview Soal</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div class="modal-body bg-light" id="preview-q-body"></div></div></div></div>`); } $('#preview-q-body').html(htmlContent); $('#modalPreviewQ').modal('show'); }
+function downloadAllQ() { const htmlContent = generateAllQHTML(); if(!htmlContent) return Swal.fire('Kosong', 'Belum ada soal.', 'info'); const html = `<!DOCTYPE html><html lang="id"><head><title>Preview</title><style>body{font-family:Arial;background:#f1f5f9;padding:40px;display:flex;justify-content:center}.container{max-width:800px;width:100%}img{max-width:100%;height:auto}</style></head><body><div class="container">${htmlContent}</div><script>window.onload=function(){window.print()}<\/script></body></html>`; const blob = new Blob([html], {type: "text/html;charset=utf-8"}); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `Soal_Ujian.html`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }
+
+function renderQuestionBlock(q, idx) {
+  const uid = q.QID ? q.QID : 'NEW_' + Math.random().toString(36).substr(2, 9);
+  const nomor = q.Nomor || (idx + 1); const cleanPrev = (q.Pertanyaan || 'Soal Baru').replace(/<[^>]+>/g, '').substring(0, 80) + '...';
+  const safeJson = JSON.stringify(q).replace(/'/g, "'");
+  return `
+  <div class="card mb-4 border-0 shadow-sm q-block" id="block-${uid}" data-id="${uid}" data-q-obj='${safeJson}'>
+    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+      <span class="badge bg-primary rounded-pill px-3">No. ${nomor}</span>
+      <div><button class="btn btn-sm btn-outline-secondary me-2" onclick="toggleEditQ('${uid}')"><i class="fas fa-edit"></i> Edit</button><button class="btn btn-sm btn-outline-danger" onclick="deleteQBlock('${uid}')"><i class="fas fa-trash"></i></button></div>
+    </div>
+    <div class="card-body">
+      <div class="q-preview mb-2 fw-bold text-muted">${cleanPrev}</div>
+      <div class="q-form hidden" id="form-${uid}">
+        <form id="frm-q-${uid}" onsubmit="event.preventDefault(); saveQBlock('${uid}'); return false;">
+          <input type="hidden" name="id" value="${q.QID || ''}">
+          <div class="row g-2 mb-3"><div class="col-md-2"><label class="small fw-bold">No</label><input type="number" name="num" class="form-control" value="${nomor}" required></div><div class="col-md-4"><label class="small fw-bold">Tipe</label><select name="type" class="form-select q-type-sel" onchange="renderAnsFields('${uid}', this.value)" id="type-${uid}"><option value="PGS" ${q.Tipe=='PGS'?'selected':''}>Pilihan Ganda</option><option value="PGK" ${q.Tipe=='PGK'?'selected':''}>PG Kompleks</option><option value="PGKK" ${q.Tipe=='PGKK'?'selected':''}>Benar Salah</option><option value="Menjodohkan" ${q.Tipe=='Menjodohkan'?'selected':''}>Menjodohkan</option><option value="Uraian" ${q.Tipe=='Uraian'?'selected':''}>Uraian</option></select></div><div class="col-md-2"><label class="small fw-bold">Skor</label><input type="number" name="score" class="form-control" value="${q.Skor || 10}"></div></div>
+          <label class="small fw-bold mb-1">Pertanyaan</label><textarea id="sn-${uid}" name="text">${q.Pertanyaan || ''}</textarea>
+          <div class="card mt-3 bg-light"><div class="card-body"><label class="small fw-bold mb-2">Jawaban & Kunci</label><div id="ans-area-${uid}"></div></div></div>
+          <div class="text-end mt-3"><button type="button" class="btn btn-secondary me-1" onclick="toggleEditQ('${uid}')">Tutup</button><button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Simpan</button></div>
+        </form>
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleEditQ(uid) { const form = $(`#form-${uid}`); if (form.hasClass('hidden')) { activeUid = uid; form.removeClass('hidden'); $(`#block-${uid}`).addClass('border-primary'); $(`#sn-${uid}`).summernote(snConfig); renderAnsFields(uid, $(`#type-${uid}`).val()); } else { form.addClass('hidden'); $(`#block-${uid}`).removeClass('border-primary'); $(`#sn-${uid}`).summernote('destroy'); $(`#ans-area-${uid} .summernote-opt`).each(function(){ $(this).summernote('destroy'); }); } }
+function renderAnsFields(uid, type) { const block = $(`#block-${uid}`); let qData = {}; try { qData = JSON.parse(block.attr('data-q-obj').replace(/'/g, "'") || '{}'); } catch(e){} const opts = (qData.Tipe === type) ? JSON.parse(qData.Options || "[]") : []; const keys = (qData.Tipe === type) ? JSON.parse(qData.Key || "[]") : []; $(`#ans-area-${uid} .summernote-opt`).each(function(){ $(this).summernote('destroy'); }); let h = ''; if (type === 'PGS' || type === 'PGK') { const inputType = type === 'PGS' ? 'radio' : 'checkbox'; h = `<button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="addOptRow('${uid}', '${inputType}')">+ Opsi</button><div id="opts-wrap-${uid}">`; if(opts.length) opts.forEach(o => h+=genOptRow(uid, inputType, o, keys.map(k=>k.trim()).includes(o.trim())?'checked':'')); else h+=genOptRow(uid, inputType); h+='</div>'; } else if (type === 'PGKK') { h = `<table class="table table-sm"><thead><tr><th>Pernyataan</th><th>Kunci</th><th>X</th></tr></thead><tbody id="pgkk-tbody-${uid}">`; if(opts.length) opts.forEach((o,i)=>h+=genPGKKRow(o,keys[i])); else h+=genPGKKRow(); h+=`</tbody></table><button type="button" class="btn btn-sm btn-info" onclick="addPGKKRowTo('${uid}')">+ Baris</button>`; } else if (type === 'Menjodohkan') { h = `<table class="table table-sm"><thead><tr><th>Kiri</th><th>Kanan (Kunci)</th><th>X</th></tr></thead><tbody id="match-tbody-${uid}">`; if(opts.length) opts.forEach((o,i)=>h+=genMatchRow(o,keys[i])); else h+=genMatchRow(); h+=`</tbody></table><button type="button" class="btn btn-sm btn-info" onclick="addMatchRowTo('${uid}')">+ Pasangan</button>`; } else if (type === 'Uraian') { h = `<textarea class="form-control" name="essay_key" placeholder="Kata kunci penilaian (dipisah koma)">${keys.join(',')}</textarea>`; } $(`#ans-area-${uid}`).html(h); $(`#ans-area-${uid} .summernote-opt`).summernote({height: 80, toolbar: snConfig.toolbar}); }
+function genOptRow(uid, type, val='', checked='') { return `<div class="d-flex align-items-start mb-2 ans-row gap-2"><div class="mt-2"><input type="${type}" name="k_${uid}" class="form-check-input" ${checked}></div><div class="flex-grow-1"><textarea class="summernote-opt">${val}</textarea></div><button type="button" class="btn btn-outline-danger mt-1" onclick="removeOptRow(this)">X</button></div>`; }
+function genPGKKRow(q='', k='B') { return `<tr><td><textarea class="summernote-opt pgkk-q">${q}</textarea></td><td><select class="form-select pgkk-k"><option value="B" ${k=='B'?'selected':''}>Benar</option><option value="S" ${k=='S'?'selected':''}>Salah</option></select></td><td><button class="btn btn-danger btn-sm" onclick="$(this).closest('tr').remove()">X</button></td></tr>`; }
+function genMatchRow(l='', r='') { return `<tr><td><textarea class="summernote-opt match-l">${l}</textarea></td><td><textarea class="summernote-opt match-r">${r}</textarea></td><td><button class="btn btn-danger btn-sm" onclick="$(this).closest('tr').remove()">X</button></td></tr>`; }
+function addOptRow(uid, t) { const el = $(genOptRow(uid, t)); $(`#opts-wrap-${uid}`).append(el); el.find('.summernote-opt').summernote({height:80}); }
+function addPGKKRowTo(uid) { const el = $(genPGKKRow()); $(`#pgkk-tbody-${uid}`).append(el); el.find('.summernote-opt').summernote({height:80}); }
+function addMatchRowTo(uid) { const el = $(genMatchRow()); $(`#match-tbody-${uid}`).append(el); el.find('.summernote-opt').summernote({height:80}); }
+function removeOptRow(btn) { $(btn).closest('.ans-row').remove(); }
+
+async function saveQBlock(uid) {
+    const form = $(`#frm-q-${uid}`);
+    const type = form.find('select[name="type"]').val(); const text = $(`#sn-${uid}`).summernote('code');
+    const score = form.find('input[name="score"]').val(); const num = form.find('input[name="num"]').val();
+    const id = form.find('input[name="id"]').val();
+    
+    let opts=[], keys=[], keyIndices=[];
+    if (type === 'PGS' || type === 'PGK') { $(`#opts-wrap-${uid} .ans-row`).each(function(){ const v = $(this).find('.summernote-opt').summernote('code'); if(v && v !== '<p><br></p>'){ opts.push(v); if($(this).find('.form-check-input').is(':checked')) { keys.push(v); keyIndices.push(opts.length - 1); } } }); } 
+    else if(type==='PGKK') { $(`#pgkk-tbody-${uid} tr`).each(function(){ const q = $(this).find('.pgkk-q').summernote('code'); if(q){ opts.push(q); keys.push($(this).find('.pgkk-k').val()); } }); } 
+    else if(type==='Menjodohkan') { $(`#match-tbody-${uid} tr`).each(function(){ const l = $(this).find('.match-l').summernote('code'); const r = $(this).find('.match-r').summernote('code'); if(l && r){ opts.push(l); keys.push(r); } }); } 
+    else { keys = form.find('textarea[name="essay_key"]').val().split(','); } 
+    
+    const payload={id:id, num:num, type:type, text:text, options:opts, key:keys, keyIndices:keyIndices, score:score}; 
+    const btn=form.find('button[type="submit"]'); btn.prop('disabled',true).text('Menyimpan...');
+    
+    const res = await fetchAPI({ action: 'adminSaveSingleQuestion', examId: activeExamId, data: payload });
+    btn.prop('disabled',false).text('Simpan');
+    
+    if(res.status==='success'){
+        toast('success','Soal Disimpan!');
+        const newData={QID:res.id, Tipe:type, Pertanyaan:text, Options:JSON.stringify(opts), Key:JSON.stringify(keys), Skor:score, Nomor:num};
+        $(`#block-${uid}`).attr('data-q-obj', JSON.stringify(newData).replace(/'/g, "'")).find('input[name="id"]').val(res.id);
+        $(`#block-${uid} .q-preview`).html('Soal Tersimpan');
+        toggleEditQ(uid);
+        const existingIdx = currentQuestionsData.findIndex(q => String(q.QID) === String(res.id));
+        if (existingIdx !== -1) currentQuestionsData[existingIdx] = newData;
+        else { currentQuestionsData.push(newData); currentQuestionsData.sort((a,b) => (Number(a.Nomor)||999) - (Number(b.Nomor)||999)); }
+    } else Swal.fire('Error',res.msg,'error');
+}
+
+function deleteQBlock(uid) {
+    const id=$(`#block-${uid}`).find('input[name="id"]').val(); if(!id){ $(`#block-${uid}`).remove(); return; }
+    Swal.fire({title:'Hapus Soal?',icon:'warning',showCancelButton:true}).then(async r=>{
+        if(r.isConfirmed){
+            $(`#block-${uid}`).fadeOut();
+            await fetchAPI({ action: 'adminDeleteQuestion', id: id });
+            currentQuestionsData = currentQuestionsData.filter(q => String(q.QID) !== String(id));
+        }
+    });
+}
+
+function startExam(eid) {
+    Swal.fire({ title: 'Mulai Ujian?', text: "Layar penuh aktif. Jangan keluar aplikasi!", icon: 'info', showCancelButton: true, confirmButtonText: '🚀 MULAI', confirmButtonColor: '#1e3a8a' }).then(async r => {
         if(r.isConfirmed) {
+            if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen().catch(() => {}); }
             showLoad(true);
             const res = await fetchAPI({ action: 'getExamPack', examId: eid });
             showLoad(false);
             if(res.status === 'success') {
                 localStorage.removeItem(`ANS_${user.ID}_${eid}`);
                 activeExamId = eid; totalQ = res.data.length;
-                $('#do-exam-title').html(`${res.judul} | ${user.Nama}`);
+                $('#do-exam-title').html(`${res.judul} <span class="mx-2">|</span> ${user.Nama}`);
                 localStorage.setItem('cbt_active_exam', JSON.stringify({ id: eid, qs: res.data, dur: res.duration, start: Date.now(), judul: res.judul }));
-                enableSecurity(); runExam(res.data, res.duration, false);
+                violationCount = 0; $('#viol-disp').text(violationCount); enableSecurity(); runExam(res.data, res.duration, false);
             } else Swal.fire('Gagal', res.msg, 'error');
         }
     });
 }
 
-function enableSecurity() { 
-    violationCount = 0; isExamFinished = false; $('#viol-disp').text(violationCount); $('#viol-badge').removeClass('hidden');
-    const d = document.documentElement; if (d.requestFullscreen) d.requestFullscreen().catch(()=>{});
-    document.addEventListener("visibilitychange", handleCheatEvent); document.addEventListener("fullscreenchange", handleCheatEvent);
-}
-
-function disableSecurity() { 
-    document.removeEventListener("visibilitychange", handleCheatEvent); document.removeEventListener("fullscreenchange", handleCheatEvent);
-    try{ document.exitFullscreen().catch(()=>{}) }catch(e){}
-}
-
-function handleCheatEvent(e) {
-    if (isExamFinished) return;
-    if (e.type === 'visibilitychange' && document.hidden) triggerViolation("Keluar dari tab ujian!");
-    if (e.type === 'fullscreenchange' && !document.fullscreenElement) triggerViolation("Keluar dari layar penuh!");
-}
+function enableSecurity() { violationCount = 0; isExamFinished = false; violationLock = false; document.addEventListener("visibilitychange", handleVisibilityChange); window.addEventListener("blur", handleWindowBlur); document.addEventListener("fullscreenchange", handleFullscreenChange); $(document).on("contextmenu.exam", function(e) { e.preventDefault(); return false; }); $(document).on("keydown.exam", function(e) { if (e.key === "PrintScreen" || (e.ctrlKey && e.key === "p") || (e.key === "F12")) { e.preventDefault(); return false; } }); }
+function disableSecurity() { document.removeEventListener("visibilitychange", handleVisibilityChange); window.removeEventListener("blur", handleWindowBlur); document.removeEventListener("fullscreenchange", handleFullscreenChange); $(document).off(".exam"); }
+function handleVisibilityChange() { if (!isExamFinished && document.hidden) triggerViolation("Anda keluar dari tab ujian!"); }
+function handleWindowBlur() { if (!isExamFinished) triggerViolation("Anda meninggalkan halaman ujian!"); }
+function handleFullscreenChange() { if (!isExamFinished && !document.fullscreenElement) { triggerViolation("Anda keluar dari mode fullscreen!"); try{document.documentElement.requestFullscreen().catch(()=>{});}catch(e){} } }
 
 function triggerViolation(msg) {
-    if(isExamFinished) return;
-    violationCount++; $('#viol-disp').text(violationCount);
+    if(violationLock || isExamFinished) return;
+    violationLock = true; violationCount++; $('#viol-disp').text(violationCount);
     if (violationCount >= maxViolations) {
         isExamFinished = true;
-        Swal.fire({ icon: 'error', title: 'DISKUALIFIKASI!', text: 'Pelanggaran Maksimal. Ujian Terkirim.', allowOutsideClick: false }).then(() => submitExamButton(true));
+        Swal.fire({ icon: 'error', title: 'DISKUALIFIKASI!', text: 'Terlalu banyak pelanggaran. Ujian otomatis dikirim.', allowOutsideClick: false, allowEscapeKey: false, confirmButtonText: 'OK' }).then(() => { submitExamButton(true); });
     } else {
-        Swal.fire({ icon: 'warning', title: 'PERINGATAN!', text: `${msg} (${violationCount}/${maxViolations})`, allowOutsideClick: false }).then(() => { if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); });
+        Swal.fire({ icon: 'warning', title: 'PERINGATAN!', text: `${msg} (${violationCount}/${maxViolations})`, confirmButtonText: 'KEMBALI KE UJIAN', allowOutsideClick: false }).then(() => { violationLock = false; try{document.documentElement.requestFullscreen().catch(()=>{});}catch(e){} });
     }
 }
 
@@ -388,18 +861,26 @@ function runExam(qs, dur, isResume) {
     $('#view-dashboard').addClass('hidden'); $('#view-exam').removeClass('hidden'); $('body').addClass('exam-mode');
     const c = $('#q-slides-container'); const g = $('#nav-grid'); c.empty(); g.empty();
     qs.forEach((q,i) => {
-        let inp = `<textarea class="form-control" rows="5" name="ans-${q.QID}"></textarea>`;
-        if(q.Tipe.includes('PG')) {
-            inp = ''; const opts = JSON.parse(q.Options||"[]");
-            opts.forEach(o => inp += `<label class="form-check p-3 border mb-2 rounded bg-white clickable-opt w-100 d-flex align-items-center"><input class="form-check-input flex-shrink-0" type="${q.Tipe==='PGK'?'checkbox':'radio'}" name="ans-${q.QID}" value="${encodeURIComponent(o)}"><div class="ms-3 flex-grow-1 opt-content mb-0">${o}</div></label>`);
-        }
-        c.append(`<div class="q-slide hidden" id="sl-${i}" data-qid="${q.QID}" data-type="${q.Tipe}"><div class="badge bg-primary mb-3">No. ${i+1}</div><div class="mb-4 lead">${q.Pertanyaan}</div>${inp}</div>`);
-        g.append(`<button id="nb-${i}" class="q-nav-btn" onclick="jump(${i})">${i+1}</button>`);
+        let inp = '';
+        if(q.Tipe==='PGKK') {
+            const opts = JSON.parse(q.Options||"[]");
+            inp = `<table class="table table-bordered tbl-pgkk mt-3 bg-white"><thead><tr class="table-light"><th>PERNYATAAN</th><th width="15%">BENAR</th><th width="15%">SALAH</th></tr></thead><tbody>`;
+            opts.forEach((o,x)=> inp+=`<tr><td><div class="opt-content">${o}</div></td><td style="padding:0; vertical-align:middle;"><label class="d-flex w-100 h-100 justify-content-center align-items-center m-0 clickable-opt" style="padding: 15px;"><input class="form-check-input m-0" type="radio" name="ans-${q.QID}-${x}" value="B" onchange="saveAnsLocal('${q.QID}', 'PGKK', ${i})"></label></td><td style="padding:0; vertical-align:middle;"><label class="d-flex w-100 h-100 justify-content-center align-items-center m-0 clickable-opt" style="padding: 15px;"><input class="form-check-input m-0" type="radio" name="ans-${q.QID}-${x}" value="S" onchange="saveAnsLocal('${q.QID}', 'PGKK', ${i})"></label></td></tr>`);
+            inp += `</tbody></table>`;
+        } else if(q.Tipe==='Menjodohkan') {
+            const lItems = JSON.parse(q.Options||"[]"); const rItems = q.Extra || [];
+            inp = `<div class="match-container" id="match-area-${i}"><input type="hidden" id="ans-in-${i}" onchange="saveAnsLocal('${q.QID}', 'MATCH', ${i})"><svg class="match-svg" id="svg-${i}"></svg><div class="match-col" id="col-l-${i}">${lItems.map((t,Idx)=>`<div class="match-item match-left" data-idx="${Idx}" onclick="matchClick(${i}, 'l', ${Idx}, this)"><div class="opt-content">${t}</div></div>`).join('')}</div><div class="match-col" id="col-r-${i}">${rItems.map((t,Idx)=>`<div class="match-item match-right" data-idx="${Idx}" data-val="${encodeURIComponent(t)}" onclick="matchClick(${i}, 'r', ${Idx}, this)"><div class="opt-content">${t}</div></div>`).join('')}</div></div><div class="text-end mt-2"><button class="btn btn-sm btn-outline-warning" onclick="resetMatch(${i})">Reset Garis</button></div>`;
+        } else if(q.Tipe.includes('PG')) {
+            const opts = JSON.parse(q.Options||"[]");
+            opts.forEach(o => inp += `<label class="form-check p-3 border mb-2 rounded bg-white clickable-opt d-flex align-items-center w-100"><input class="form-check-input flex-shrink-0" type="${q.Tipe==='PGK'?'checkbox':'radio'}" name="ans-${q.QID}" value="${encodeURIComponent(o)}" onchange="saveAnsLocal('${q.QID}', '${q.Tipe}', ${i})"><div class="ms-3 flex-grow-1 opt-content mb-0">${o}</div></label>`);
+        } else inp = `<textarea class="form-control" rows="5" name="ans-${q.QID}" onchange="saveAnsLocal('${q.QID}', 'ESSAY', ${i})"></textarea>`;
+        c.append(`<div class="q-slide hidden" id="sl-${i}" data-qid="${q.QID}" data-type="${q.Tipe}"><div class="badge bg-primary mb-3">Soal No. ${q.Nomor||i+1}</div><div class="mb-4 q-content lead">${q.Pertanyaan}</div>${inp}</div>`);
+        g.append(`<button id="nb-${i}" class="q-nav-btn ${i===0?'active-q':''}" onclick="jump(${i})">${i+1}</button>`);
     });
-    jump(0);
-    
+    restoreAnswers(qs); jump(0);
+
     let startTime = Date.now();
-    if(isResume) { const st = JSON.parse(localStorage.getItem('cbt_active_exam')); if(st && st.start) startTime = st.start; }
+    if(isResume) { const storedState = JSON.parse(localStorage.getItem('cbt_active_exam')); if(storedState && storedState.start) startTime = storedState.start; }
     const endTime = startTime + (dur * 60000);
 
     clearInterval(timerInt);
@@ -408,38 +889,74 @@ function runExam(qs, dur, isResume) {
         if(diff <= 0) { clearInterval(timerInt); submitExamButton(true); }
         else { let m = Math.floor(diff/60), s = diff%60; $('#timer-disp').text(`${m}:${s<10?'0':''}${s}`); if(diff < 300) $('#timer-disp').addClass('text-danger fw-bold'); }
     }, 1000);
+    monitorInterval = setInterval(() => { fetchAPI({ action: 'updateClientProgress', examId: activeExamId, c: $('.q-nav-btn.answered').length, t: totalQ }); }, 20000);
+    autosaveInterval = setInterval(() => { const key = `ANS_${user.ID}_${activeExamId}`; const data = localStorage.getItem(key); if(data) fetchAPI({ action: 'autosaveAnswer', examId: activeExamId, j: data }); }, 60000);
 }
 
-function jump(i) { currentQIdx = i; $('.q-slide').addClass('hidden'); $(`#sl-${i}`).removeClass('hidden'); $('.q-nav-btn').removeClass('active-q'); $(`#nb-${i}`).addClass('active-q'); }
+function saveAnsLocal(qid, type, idx) {
+    let val; if(type.includes('PG')) { if(type==='PGK') { val=[]; $(`input[name="ans-${qid}"]:checked`).each(function(){ val.push(decodeURIComponent($(this).val())) }); } else val = decodeURIComponent($(`input[name="ans-${qid}"]:checked`).val()); } else if(type === 'PGKK') { val=[]; $(`#sl-${idx} tbody tr`).each(function(x){ val.push($(`input[name="ans-${qid}-${x}"]:checked`).val()||null) }); } else if(type === 'MATCH') { const raw = $(`#ans-in-${idx}`).val(); val = raw ? JSON.parse(raw) : []; } else val = $(`#sl-${idx} textarea`).val();
+    const key = `ANS_${user.ID}_${activeExamId}`; let currentData = JSON.parse(localStorage.getItem(key) || "{}"); currentData[qid] = val; localStorage.setItem(key, JSON.stringify(currentData)); markAns(idx);
+}
+
+function restoreAnswers(qs) { const key = `ANS_${user.ID}_${activeExamId}`; const saved = JSON.parse(localStorage.getItem(key) || "{}"); qs.forEach((q, idx) => { const val = saved[q.QID]; if(val) { markAns(idx); if(q.Tipe === 'PGS') $(`input[name="ans-${q.QID}"][value="${encodeURIComponent(val)}"]`).prop('checked', true); else if(q.Tipe === 'PGK') val.forEach(v => $(`input[name="ans-${q.QID}"][value="${encodeURIComponent(v)}"]`).prop('checked', true)); else if(q.Tipe === 'Uraian') $(`textarea[name="ans-${q.QID}"]`).val(val); else if(q.Tipe === 'PGKK') { val.forEach((v, rIdx) => { if(v) $(`input[name="ans-${q.QID}-${rIdx}"][value="${v}"]`).prop('checked', true); }); } else if(q.Tipe === 'Menjodohkan') { $(`#ans-in-${idx}`).val(JSON.stringify(val)); setTimeout(() => redrawMatchLines(idx, val, q.Extra), 500); } } }); }
+function markAns(i) { $(`#nb-${i}`).addClass('answered'); }
+function jump(i) { currentQIdx = i; $('.q-slide').addClass('hidden'); $(`#sl-${i}`).removeClass('hidden'); $('.q-nav-btn').removeClass('active-q'); $(`#nb-${i}`).addClass('active-q'); if($(`#sl-${i}`).data('type')==='Menjodohkan') setTimeout(()=>drawLines(i), 50); }
 function navSlide(dir) { let next = currentQIdx + dir; if(next >= 0 && next < totalQ) jump(next); }
 
 async function submitExamButton(force = false) {
-    if (examSubmitting) return; 
+    if (examSubmitting) return; const answeredCount = $('.q-nav-btn.answered').length;
     if (!force) {
-        const r = await Swal.fire({ title: 'Kirim Jawaban?', text: 'Pastikan semua selesai.', icon: 'question', showCancelButton: true, confirmButtonText: 'Kirim' });
-        if(!r.isConfirmed) return;
-    }
-    
-    examSubmitting = true; $('#btn-finish').prop('disabled', true).html('Mengirim...');
-    clearInterval(timerInt); isExamFinished = true; disableSecurity();
-    
+        const result = await Swal.fire({ title: 'Kirim Jawaban?', html: `<div class="text-start"><p class="mb-2">Anda telah mengerjakan <b>${answeredCount}</b> dari <b>${totalQ}</b> soal.</p><div class="alert alert-warning small"><i class="fas fa-exclamation-circle me-1"></i>Pastikan semua jawaban sudah benar. Jawaban tidak bisa diubah setelah dikirim.</div></div>`, icon: 'question', showCancelButton: true, confirmButtonColor: '#198754', cancelButtonColor: '#6c757d', confirmButtonText: 'Ya, Kirim Sekarang', cancelButtonText: 'Periksa Lagi' });
+        if (result.isConfirmed) processSubmission();
+    } else { processSubmission(); }
+}
+
+async function processSubmission(retryCount = 0) {
+    if (examSubmitting && retryCount === 0) return; examSubmitting = true;
+    const btn = $('#btn-finish'); const originalText = '<i class="fas fa-check-circle me-1"></i> KIRIM JAWABAN';
+    if (retryCount === 0) { btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Mengirim...'); clearInterval(timerInt); clearInterval(monitorInterval); clearInterval(autosaveInterval); isExamFinished = true; disableSecurity(); }
+
     let ans = [];
-    $('.q-slide').each(function() {
-        const qid = $(this).data('qid'), t = $(this).data('type'); let v = null;
-        if (t === 'PGS') { const checked = $(this).find('input:checked').val(); if(checked) v = decodeURIComponent(checked); }
-        else if (t === 'PGK') { v=[]; $(this).find('input:checked').each(function(){ v.push(decodeURIComponent($(this).val())) }); }
-        else v = $(this).find('textarea').val();
-        if (v !== null && v !== undefined) ans.push({ qid: qid, answer: v });
-    });
+    try {
+        $('.q-slide').each(function(idx) {
+            const qid = $(this).data('qid'); const t = $(this).data('type'); let v = null;
+            if (t.includes('PG') && t !== 'PGKK') { if (t === 'PGK') { v = []; $(this).find('input:checked').each(function() { v.push(decodeURIComponent($(this).val())) }); } else { const checked = $(this).find('input:checked').val(); if(checked) v = decodeURIComponent(checked); } }
+            else if (t === 'PGKK') { v = []; $(this).find('tbody tr').each(function(x) { v.push($(this).find('input:checked').val() || null) }); }
+            else if (t === 'Menjodohkan') { const raw = $(`#ans-in-${idx}`).val(); v = raw ? JSON.parse(raw) : []; }
+            else { v = $(this).find('textarea').val(); }
+            if (v !== null && v !== undefined) ans.push({ qid: qid, answer: v });
+        });
+    } catch(e) { console.error("Error collecting", e); }
 
     const res = await fetchAPI({ action: 'submitExam', examId: activeExamId, answers: ans, violationCount: violationCount });
     if (res.status === 'success') {
-        localStorage.removeItem('cbt_active_exam'); $('body').removeClass('exam-mode');
-        Swal.fire('Selesai!', 'Jawaban berhasil dikirim.', 'success').then(() => window.location.reload());
+        examSubmitting = false; btn.prop('disabled', false).html(originalText);
+        localStorage.removeItem('cbt_active_exam'); localStorage.removeItem(`ANS_${user.ID}_${activeExamId}`);
+        $('body').removeClass('exam-mode'); try { document.exitFullscreen().catch(()=>{}) } catch (e) {};
+        Swal.fire({ title: 'Selesai!', html: `<div class="mb-3 text-success" style="font-size: 4rem;"><i class="fas fa-check-circle"></i></div><h5 class="fw-bold">Jawaban Berhasil Dikirim</h5><p class="text-muted mt-2">Terima kasih, hasil pengerjaan Anda telah tersimpan di sistem.</p>`, confirmButtonText: 'KEMBALI KE BERANDA', confirmButtonColor: '#1e3a8a', allowOutsideClick: false, allowEscapeKey: false }).then(() => { $('#view-exam').addClass('hidden'); $('#view-dashboard').removeClass('hidden'); loadPage('siswa-home'); });
     } else {
-        Swal.fire('Gagal', res.msg, 'error'); examSubmitting = false; $('#btn-finish').prop('disabled', false).html('KIRIM JAWABAN');
+        if (retryCount < 3) { setTimeout(() => processSubmission(retryCount + 1), 3000); } 
+        else { examSubmitting = false; btn.prop('disabled', false).html(originalText); Swal.fire('Koneksi Terputus', 'Server terlalu penuh. Gagal menghubungi server setelah beberapa percobaan. Silakan coba klik Kirim lagi.', 'error'); }
     }
 }
+
+// MATCHING LOGIC
+let matchState = {};
+function matchClick(qIdx, side, itemIdx, el) { if(!matchState[qIdx]) matchState[qIdx] = { sel: null, pairs: [] }; const st = matchState[qIdx]; $(`#match-area-${qIdx} .match-${side}`).removeClass('selected'); $(el).addClass('selected'); if(side === 'l') { st.sel = { idx: itemIdx, el: el }; } else { if(st.sel) { st.pairs = st.pairs.filter(p => p.left !== st.sel.idx); st.pairs.push({ left: st.sel.idx, right: itemIdx, rightVal: decodeURIComponent($(el).data('val')) }); drawLines(qIdx); markAns(qIdx); st.sel = null; $(`#match-area-${qIdx} .match-item`).removeClass('selected'); saveAnsLocal($(`#sl-${qIdx}`).data('qid'), 'MATCH', qIdx); } } }
+function drawLines(qIdx) { if(!matchState[qIdx]) return; const svg = document.getElementById(`svg-${qIdx}`); const container = document.getElementById(`match-area-${qIdx}`); if(!container || !svg) return; const rectC = container.getBoundingClientRect(); let html = ''; let answerArr = []; const leftCount = $(`#col-l-${qIdx}`).children().length; for(let k=0; k<leftCount; k++) answerArr[k] = null; $(`#match-area-${qIdx} .match-item`).removeClass('matched'); matchState[qIdx].pairs.forEach(p => { const elL = $(`#col-l-${qIdx}`).children().eq(p.left)[0]; const elR = $(`#col-r-${qIdx}`).children().eq(p.right)[0]; if(elL && elR) { const rL = elL.getBoundingClientRect(); const rR = elR.getBoundingClientRect(); const x1 = rL.right - rectC.left; const y1 = (rL.top + rL.height/2) - rectC.top; const x2 = rR.left - rectC.left; const y2 = (rR.top + rR.height/2) - rectC.top; html += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#10b981" stroke-width="3" />`; $(elL).addClass('matched'); $(elR).addClass('matched'); answerArr[p.left] = p.rightVal; } }); svg.innerHTML = html; $(`#ans-in-${qIdx}`).val(JSON.stringify(answerArr)); }
+function resetMatch(qIdx) { matchState[qIdx] = { sel: null, pairs: [] }; document.getElementById(`svg-${qIdx}`).innerHTML = ''; $(`#match-area-${qIdx} .match-item`).removeClass('matched selected'); $(`#ans-in-${qIdx}`).val(''); saveAnsLocal($(`#sl-${qIdx}`).data('qid'), 'MATCH', qIdx); }
+function redrawMatchLines(qIdx, savedArr, rightItems) { if(!matchState[qIdx]) matchState[qIdx] = { sel: null, pairs: [] }; if(Array.isArray(savedArr)) { matchState[qIdx].pairs = []; savedArr.forEach((val, lIdx) => { if(val) { const rIdx = rightItems.indexOf(val); if(rIdx > -1) { matchState[qIdx].pairs.push({ left: lIdx, right: rIdx, rightVal: val }); } } }); drawLines(qIdx); } }
+
+function editUser(s){ const u=JSON.parse(decodeURIComponent(s)); $('#modalUser').modal('show'); $('#mu-id').val(u.ID); $('#mu-nama').val(u.Nama); $('#mu-user').val(u.Username); $('#mu-pass').val(u.Password); $('#mu-role').val(u.Role); $('#mu-kelas').val(u.Kelas); $('#mu-sekolah').val(u.Sekolah); }
+async function saveUser(e){ if (e) e.preventDefault(); const d={id:$('#mu-id').val(), nama:$('#mu-nama').val(), username:$('#mu-user').val(), password:$('#mu-pass').val(), role:$('#mu-role').val(), kelas:$('#mu-kelas').val(), sekolah:$('#mu-sekolah').val()}; showLoad(true); await fetchAPI({ action: 'adminManageUser', mode: 'save', data: d }); showLoad(false); $('#modalUser').modal('hide'); loadPage('admin-users'); }
+function delUser(id){ if(confirm('Hapus User?')) { showLoad(true); fetchAPI({action: 'adminManageUser', mode: 'delete', data: {id: id}}).then(()=>{showLoad(false); loadPage('admin-users')}); } }
+function deleteResult(rid) { Swal.fire({title:'Hapus & Reset?', text:'Nilai dihapus & siswa bisa ujian lagi.', icon:'warning', showCancelButton:true, confirmButtonColor:'#d33'}).then(async r=>{ if(r.isConfirmed) { showLoad(true); const res = await fetchAPI({ action: 'adminDeleteResult', id: rid }); showLoad(false); if(res.status==='success'){ Swal.fire('Berhasil',res.msg,'success'); loadPage('hasil-rekap'); } else Swal.fire('Gagal',res.msg,'error'); } }); }
+
+async function renderMonitoring(){ showLoad(true); const r = await fetchAPI({action: 'getDashboardData'}); showLoad(false); let h=`<div class="row g-2 mb-3"><div class="col-md-5"><select id="mon-sel" class="form-select" onchange="startMon()"><option value="">Pilih Ujian...</option>`; r.data.exams.forEach(e=>h+=`<option value="${e.ExamID}">${e.Judul}</option>`); h+=`</select></div><div class="col-md-5"><input type="text" id="mon-search" class="form-control" placeholder="Cari..." onkeyup="filterTable('tbl-mon', this.value)"></div><div class="col-md-2"></div></div><div id="mon-area" class="bg-white p-3 rounded shadow-sm" style="min-height:200px">Silakan pilih ujian.</div>`; $('#content-area').html(h); }
+function startMon(){ const id=$('#mon-sel').val(); if(id){ fetchMon(id); clearInterval(monitorInterval); monitorInterval=setInterval(()=>fetchMon(id),10000); } else $('#mon-area').empty(); }
+async function fetchMon(id){ const r = await fetchAPI({ action: 'getLiveMonitoring', examId: id }); if(r.status==='error') { $('#mon-area').html(`<div class="alert alert-warning">${r.msg}</div>`); return; } let h=`<table id="tbl-mon" class="table table-hover align-middle"><thead><tr class="table-light"><th>Nama</th><th>Progress</th><th>Status</th><th>Aksi</th></tr></thead><tbody>`; r.data.forEach(d=>{ const p=Math.round((d.terjawab/d.total)*100)||0; h+=`<tr data-uid="${d.id}" data-nama="${d.nama}"><td><div class="fw-bold">${d.nama}</div><small class="text-muted">${d.kelas}</small></td><td><div class="progress" style="height:20px"><div class="progress-bar bg-success" style="width:${p}%">${d.terjawab}/${d.total}</div></div></td><td>${d.status==='Online'?'<span class="badge bg-success">ON</span>':'<span class="badge bg-secondary">OFF</span>'}</td><td><button class="btn btn-sm btn-outline-danger" onclick="triggerReset('${d.id}', '${d.nama}')">Reset</button></td></tr>` }); $('#content-area').html(h+'</tbody></table>'); const cur=$('#mon-search').val(); if(cur) filterTable('tbl-mon', cur); }
+function triggerReset(sId, sName) { const eId = $('#mon-sel').val(); if(!sId || !eId) return; Swal.fire({ title: 'Reset Siswa Ini?', text: `${sName} akan dikeluarkan dan harus login ulang.`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'Ya, Reset!' }).then(async r => { if(r.isConfirmed) { Swal.fire({title: 'Memproses...', allowOutsideClick: false, didOpen: () => Swal.showLoading() }); const res = await fetchAPI({ action: 'teacherResetStatus', siswaId: sId, examId: eId }); if(res.status === 'success') { Swal.fire('Berhasil', res.msg, 'success'); fetchMon(eId); } else { Swal.fire('Gagal', res.msg, 'error'); } } }); }
+function filterTable(tid, q) { const f=q.toLowerCase(); $(`#${tid} tbody tr`).each(function(){ const t=$(this).text().toLowerCase(); $(this).toggle(t.indexOf(f)>-1); }); }
 </script>
 </body>
 </html>
